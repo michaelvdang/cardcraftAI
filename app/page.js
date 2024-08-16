@@ -48,11 +48,6 @@ export default function Home() {
       console.warn(error.message)
     }
   }
-
-  const handleProPlanClick = () => {
-    // router.push('https://buy.stripe.com/28o8yO9G5bY8cBW288');
-    router.push('https://buy.stripe.com/test_aEU7sHbTAba7eJO4gg');
-  }
   
   return (
     <>
@@ -186,7 +181,6 @@ export default function Home() {
                   }
                 }}
                 disabled
-                onClick={() => {router.push('/checkout?plan=free')}}
               >
                 Current
               </Button>
@@ -214,7 +208,8 @@ export default function Home() {
                 sx={{
                   justifySelf: 'center',
                 }}
-                onClick={handleProPlanClick}
+                onClick={handleSubmit}
+                // onClick={handleProPlanClick}
                 // onClick={() => {router.push('/checkout?plan=pro')}}
               >
                 Choose Pro

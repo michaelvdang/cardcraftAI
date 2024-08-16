@@ -1,8 +1,14 @@
-const ResultPage = () => {
+'use client'
+
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { Container, Typography, CircularProgress, Box } from '@mui/material'
+
+export default function ResultPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const session_id = searchParams.get('session_id')
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [session, setSession] = useState(null)
   const [error, setError] = useState(null)
 
@@ -10,7 +16,8 @@ const ResultPage = () => {
     const fetchCheckoutSession = async () => {
       if (!session_id) return
       try {
-        const res = await fetch(`/api/checkout_sessions?session_id=${session_id}`)
+        setLoading(true)
+        const res = await fetch(`/api/checkout-sessions?session_id=${session_id}`)
         const sessionData = await res.json()
         if (res.ok) {
           setSession(sessionData)
@@ -45,6 +52,10 @@ const ResultPage = () => {
         </Typography>
       </Container>
     )
+  }
+
+  if (!session) {
+    return <p>No session found</p>
   }
 
   return (
