@@ -9,10 +9,13 @@ import { SignedIn, SignedOut, UserButton, SignInButton, SignInWithMetamaskButton
 import { useEffect } from "react";
 import { signInWithCustomToken } from "firebase/auth";
 import { auth } from "../firebase";
+import { useRouter } from "next/navigation";
+import Pricing from "@/components/pricing";
 
 export default function Home() {
   const { user } = useUser()
   const { getToken, userId } = useAuth()
+  const router = useRouter();
 
   const signIntoFirebaseWithClerk = async () => {
     const token = await getToken({ template: 'integration_firebase' })
@@ -30,7 +33,7 @@ export default function Home() {
   }, [user])
   
   const handleSubmit = async () => {
-    const checkoutSession = await fetch('/api/checkout_sessions', {
+    const checkoutSession = await fetch('/api/checkout-sessions', {
       method: 'POST',
       headers: { origin: 'http://localhost:3000' },
     })
@@ -44,6 +47,11 @@ export default function Home() {
     if (error) {
       console.warn(error.message)
     }
+  }
+
+  const handleProPlanClick = () => {
+    // router.push('https://buy.stripe.com/28o8yO9G5bY8cBW288');
+    router.push('https://buy.stripe.com/test_aEU7sHbTAba7eJO4gg');
   }
   
   return (
@@ -84,18 +92,166 @@ export default function Home() {
     </Box>
 
     {/* Features */}
-    <Box sx={{my: 6}}>
+    <Box sx={{ my: 6 }}>
       <Typography variant="h4" component="h2" gutterBottom>Features</Typography>
       <Grid container spacing={4}>
-        {/* Feature items */}
+        {/* Feature 1: Content Input */}
+        <Grid item xs={12} md={6}>
+          <Box sx={{ p: 2, borderRadius: '8px', height: '100%' }}>
+            <Typography variant="h5" component="h3" gutterBottom>
+              Content Input
+            </Typography>
+            <Typography variant="body1">
+              Enter your content, and our platform will automatically generate a set of flashcards for you. Whether it's for studying, revision, or learning new topics, the generated flashcards are optimized for your needs.
+            </Typography>
+          </Box>
+        </Grid>
+
+        {/* Feature 2: Cloud Firestore Storage */}
+        <Grid item xs={12} md={6}>
+          <Box sx={{ p: 2, borderRadius: '8px', height: '100%' }}>
+            <Typography variant="h5" component="h3" gutterBottom>
+              Cloud Storage
+            </Typography>
+            <Typography variant="body1">
+              All your flashcard sets are securely stored in Cloud Firestore, ensuring that your learning materials are always accessible, no matter the device you're using.
+            </Typography>
+          </Box>
+        </Grid>
+
+        {/* Feature 3: Pro User Access */}
+        <Grid item xs={12} md={6}>
+          <Box sx={{ p: 2, borderRadius: '8px', height: '100%' }}>
+            <Typography variant="h5" component="h3" gutterBottom>
+              Pro User Access
+            </Typography>
+            <Typography variant="body1">
+              As a Pro user, you'll have access to flashcard sets created by other free users. Expand your learning resources and discover new content by browsing shared flashcard sets.
+            </Typography>
+          </Box>
+        </Grid>
+
+        {/* Feature 4: Automatic Flashcard Generation */}
+        <Grid item xs={12} md={6}>
+          <Box sx={{ p: 2, borderRadius: '8px', height: '100%' }}>
+            <Typography variant="h5" component="h3" gutterBottom>
+              Automatic Flashcard Generation
+            </Typography>
+            <Typography variant="body1">
+              Save time with our automatic flashcard generation feature. Just input your content, and the platform will create effective flashcards tailored to your learning goals.
+            </Typography>
+          </Box>
+        </Grid>
       </Grid>
     </Box>
 
     {/* Pricing section */}
-    <Box sx={{my: 6, textAlign: 'center'}}>
+    {/* <Box
+      sx={{
+        my: 6,
+        width: 500,
+        backgroundColor: 'white'
+        // display: 'flex',
+        // flexDirection: 'column',
+        // alignItems: 'center',
+      }}
+    >
+      <Pricing />
+    </Box> */}
+    <Box sx={{ my: 6, textAlign: 'center' }}>
       <Typography variant="h4" component="h2" gutterBottom>Pricing</Typography>
       <Grid container spacing={4} justifyContent="center">
-        {/* Pricing plans */}
+        
+        <Grid item xs={12} lg={4}>
+          <Box sx={{ p: 3, borderRadius: '8px', textAlign: 'center' }}>
+            <Typography variant="h5" component="h3" gutterBottom>Starter</Typography>
+            <Typography variant="h6" color="textTertiary" gutterBottom>
+              $0 / month
+            </Typography>
+            <Box
+              sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', m: 2 }}
+            >
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: '#6c757d',  // Light gray color for visibility on dark background
+                  color: '#ffffff',            // White text color for contrast
+                  border: '1px solid #6c757d', // Matching border color
+                  '&:hover': {
+                    backgroundColor: '#5a6268', // Slightly darker gray for hover effect
+                  },
+                  '&:disabled': {
+                    backgroundColor: '#6c757d', // Maintain same color when disabled
+                    color: '#ffffff',           // White text color when disabled
+                  }
+                }}
+                disabled
+                onClick={() => {router.push('/checkout?plan=free')}}
+              >
+                Current
+              </Button>
+            </Box>
+            <Typography variant="body1">
+              - Create and save flashcards<br/>
+              - Access basic flashcard features<br/>
+              - Limited storage for flashcard sets
+            </Typography>
+          </Box>
+        </Grid>
+
+        <Grid item xs={12} lg={4}>
+          <Box sx={{ p: 3, borderRadius: '8px', textAlign: 'center', border: '2px solid #00796b' }}>
+            <Typography variant="h5" component="h3" gutterBottom>Pro</Typography>
+            <Typography variant="h6" color="textTertiary" gutterBottom>
+              $9.99 / month
+            </Typography>
+            <Box
+              sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', m: 2 }}
+            >
+              <Button 
+                variant="contained" 
+                color="primary" 
+                sx={{
+                  justifySelf: 'center',
+                }}
+                onClick={handleProPlanClick}
+                // onClick={() => {router.push('/checkout?plan=pro')}}
+              >
+                Choose Pro
+              </Button>
+            </Box>
+            <Typography variant="body1">
+              - All features in Free Plan<br/>
+              - Access to other users' flashcard sets<br/>
+              - Enhanced storage and management tools<br/>
+              - Priority customer support
+            </Typography>
+          </Box>
+        </Grid>
+
+        <Grid item xs={12} lg={4}>
+          <Box sx={{ p: 3, borderRadius: '8px', textAlign: 'center' }}>
+            <Typography variant="h5" component="h3" gutterBottom>Ultimate</Typography>
+            <Typography variant="h6" color="textTertiary" gutterBottom>
+              Custom Pricing
+            </Typography>
+            <Box
+              sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', m: 2 }}
+            >
+              <Button variant="contained" color="primary">
+                Contact Sales
+              </Button>
+            </Box>
+            <Typography variant="body1">
+              - All features in Pro Plan<br/>
+              - Custom flashcard solutions for teams<br/>
+              - Advanced analytics and reporting<br/>
+              - Dedicated account manager<br/>
+              - Tailored integrations and custom development
+            </Typography>
+          </Box>
+        </Grid>
+
       </Grid>
     </Box>
     </>
