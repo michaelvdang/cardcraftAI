@@ -69,17 +69,21 @@ export default function Generate() {
       const userDocSnap = await getDoc(userDocRef)
   
       const batch = writeBatch(db)
-  
-      if (userDocSnap.exists()) {
-        const userData = userDocSnap.data()
-        const updatedSets = [...(userData.flashcardSets || []), { name: setName }]
-        batch.update(userDocRef, { flashcardSets: updatedSets })
-      } else {
-        batch.set(userDocRef, { flashcardSets: [{ name: setName }] })
+
+      if (!userDocSnap.exists()) {
+        // If the user document doesn't exist, create it without the flashcardSets field
+        batch.set(userDocRef, {}); // Creates an empty user document
       }
   
       const setDocRef = doc(collection(userDocRef, 'flashcardSets'), setName)
-      batch.set(setDocRef, { flashcards })
+      const setDocSnap = await getDoc(setDocRef)
+      if (setDocSnap.exists()) {
+        const updatedFlashcards = [...(setDocSnap.data().flashcards || []), ...flashcards]
+        const isPublic = setDocSnap.data().isPublic; // || false
+        batch.set(setDocRef, { isPublic, flashcards: updatedFlashcards })
+      } else {
+        batch.set(setDocRef, { isPublic: false, flashcards })
+      }
 
       console.log('setname: ', setName)
       console.log('flashcards: ', {flashcards})

@@ -1,0 +1,5 @@
+
+
+TODOs:
+- add stripe customerId to firestore 
+- use webhook to update user subscription type in firestore

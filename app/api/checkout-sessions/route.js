@@ -11,24 +11,33 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST, {
 
 // Create checkout session
 export async function POST(req) {
+  const body = await req.json()
+  const { priceId } = body
   try { 
+
+    // Create customer in Stripe and get customer id
+
+    // save customer id in firestore
+
+    
     // We'll implement the checkout session creation here
     const params = {
       mode: 'subscription',
       payment_method_types: ['card'],
       line_items: [
         {
-          price_data: {
-            currency: 'usd',
-            product_data: {
-              name: 'Pro subscription',
-            },
-            unit_amount: formatAmountForStripe(10, 'usd'), // $10.00
-            recurring: {
-              interval: 'month',
-              interval_count: 1,
-            },
-          },
+          price: priceId,
+          // price_data: {
+          //   currency: 'usd',
+          //   product_data: {
+          //     name: 'Pro subscription',
+          //   },
+          //   unit_amount: formatAmountForStripe(10, 'usd'), // $10.00
+          //   recurring: {
+          //     interval: 'month',
+          //     interval_count: 1,
+          //   },
+          // },
           quantity: 1,
         },
       ],

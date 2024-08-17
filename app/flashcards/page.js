@@ -3,12 +3,12 @@ import { useUser } from "@clerk/nextjs"
 import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, Typography } from "@mui/material"
 import { useRouter } from "next/navigation"
 import { Suspense, useEffect, useState } from "react"
-import { collection, doc, getDoc, setDoc } from "firebase/firestore"
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore"
 import { db } from "../../firebase"
 
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser()
-  const [flashcards, setFlashcards] = useState([])
+  const [flashcardSets, setFlashcardSets] = useState([])
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
 
@@ -20,16 +20,24 @@ export default function Flashcard() {
     async function getFlashcards() {
       if (!user) return
       setIsLoading(true)
-      const docRef = doc(collection(db, 'users'), user.id)
-      const docSnap = await getDoc(docRef)
-      if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
-        const collections = docSnap.data().flashcardSets || []
-        setFlashcards(collections)
-      } else {
-        await setDoc(docRef, { flashcards: [] })
+      try {
+        {/* get document with user id */}
+        const docRef = doc(collection(db, 'users'), user.id)
+        const docSnap = await getDoc(docRef)
+        if (docSnap.exists()) {
+          {/* get document ids from flashcardSets collection */}
+          const colRef = collection(docRef, 'flashcardSets')
+          const colSnap = await getDocs(colRef)
+          const sets = []
+          colSnap.forEach((doc) => {
+            sets.push({name: doc.id})
+          })
+          setFlashcardSets(sets)
+        }
+      } catch (error) {
+        console.log(error)
       }
-      // setIsLoading(false)
+      setIsLoading(false)
     }
     getFlashcards()
   }, [user])
@@ -46,7 +54,7 @@ export default function Flashcard() {
         mb={4}
       >
         <Typography variant="h4" component="h1" gutterBottom>
-          Flashcards
+          Flashcard Sets
         </Typography>
 
         <Box
@@ -72,7 +80,7 @@ export default function Flashcard() {
       </Box>
         
         
-      {flashcards.length === 0 ? (
+      {flashcardSets.length === 0 ? (
         isLoading ? (
             <Box sx={{ 
                 display: 'flex',
@@ -83,21 +91,21 @@ export default function Flashcard() {
               Loading...
              </Box>
           ) : (
-            <Box>You have no flashcards.</Box>
+            <Box>You have no flashcard sets.</Box>
           ) 
       ) : (
         <Typography variant="body1" gutterBottom>
-          You have {flashcards.length} flashcards.
+          You have {flashcardSets.length} flashcard sets.
         </Typography>
       )}
       <Grid container spacing={3} sx={{ mt: 4 }}>
-        {flashcards.map((flashcard, index) => (
+        {flashcardSets.map((set, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
             <Card>
-              <CardActionArea onClick={() => handleCardClick(flashcard.name)}>
+              <CardActionArea onClick={() => handleCardClick(set.name)}>
                 <CardContent>
                   <Typography variant="h5" component="div">
-                    {flashcard.name}
+                    {set.name}
                   </Typography>
                 </CardContent>
               </CardActionArea>

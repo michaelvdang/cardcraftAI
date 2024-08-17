@@ -6,6 +6,7 @@ import { collection, doc, getDoc, getDocs } from "firebase/firestore"
 import { db } from "../../firebase"
 import { useRouter } from "next/navigation"
 import { useSearchParams } from "next/navigation"
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser()
@@ -52,9 +53,19 @@ export default function Flashcard() {
       }))
     }
   }
+
+  const handleDelete = async (index) => {
+    const newFlashcards = [...flashcards]
+    newFlashcards.splice(index, 1)
+    setFlashcards(newFlashcards)
+    const docRef = doc(collection(doc(collection(db, 'users'), user.id), 'flashcardSets'), search)
+    const batch = writeBatch(db)
+    batch.update(docRef, {flashcards: newFlashcards})
+    await batch.commit()
+  }
   
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
       <Box
         sx={{
           display: 'flex',
@@ -164,6 +175,25 @@ export default function Flashcard() {
           </Grid>
         ))}
       </Grid>
+      {flashcards.length > 0 && (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <Button 
+            sx={{ 
+            color: 'white', 
+            borderColor: 'red', 
+            backgroundColor: 'red'}} 
+            variant="outlined" 
+            startIcon={<DeleteIcon />}
+            onClick={handleDelete}>
+            Delete
+          </Button>
+        </Box>
+      )}
     </Container>
   )
 }

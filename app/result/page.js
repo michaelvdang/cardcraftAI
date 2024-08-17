@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Container, Typography, CircularProgress, Box } from '@mui/material'
+import { Container, Typography, CircularProgress, Box, Button } from '@mui/material'
 
 export default function ResultPage() {
   const router = useRouter()
@@ -59,7 +59,51 @@ export default function ResultPage() {
   }
 
   return (
+    <>
     <Container maxWidth="sm" sx={{textAlign: 'center', mt: 4}}>
+      {/* Header with Nav Buttons */}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+        textAlign="center"
+        mt={4}
+        mb={4}
+      >
+        <Typography variant="h4" component="h1" gutterBottom>
+          Result
+        </Typography>
+
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 2,
+            height: '100%',
+          }}
+        >
+          <Button
+            variant="contained"
+            onClick={() => router.push('/')}
+          >
+            Home
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => router.push('/generate')}
+          >
+            Generate
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => router.push('/flashcards')}
+          >
+            Flashcards
+          </Button>
+        </Box>
+      </Box>
+
+      {/* Session Result */}
       {session.payment_status === 'paid' ? (
         <>
           <Typography variant="h4">Thank you for your purchase!</Typography>
@@ -82,5 +126,6 @@ export default function ResultPage() {
         </>
       )}
     </Container>
+    </>
   )
 }

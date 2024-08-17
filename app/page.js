@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { signInWithCustomToken } from "firebase/auth";
 import { auth } from "../firebase";
 import { useRouter } from "next/navigation";
-import Pricing from "@/components/pricing";
+import StripePricingTable from "@/components/pricing";
 
 export default function Home() {
   const { user } = useUser()
@@ -32,10 +32,16 @@ export default function Home() {
     signIntoFirebaseWithClerk()
   }, [user])
   
-  const handleSubmit = async () => {
+  const handlePurchasePro = async () => {
+    if (!user) {
+      alert('Please sign in to purchase a plan')
+      return
+    }
+    const pro_price_id = 'price_1PoGZcC3afAR2U7cASsbbCQc'
     const checkoutSession = await fetch('/api/checkout-sessions', {
       method: 'POST',
       headers: { origin: 'http://localhost:3000' },
+      body: JSON.stringify({ priceId: pro_price_id }),
     })
     const checkoutSessionJson = await checkoutSession.json()
   
@@ -79,10 +85,10 @@ export default function Home() {
         The easiest way to create flashcards from your text.
       </Typography>
       <Button variant="contained" color="primary" sx={{mt: 2, mr: 2}} href="/generate">
-        Get Started
+        Create
       </Button>
-      <Button variant="outlined" color="primary" sx={{mt: 2}}>
-        Learn More
+      <Button variant="outlined" color="primary" sx={{mt: 2}} href="/flashcards">
+        View Flashcards
       </Button>
     </Box>
 
@@ -141,19 +147,14 @@ export default function Home() {
     </Box>
 
     {/* Pricing section */}
-    {/* <Box
+    <Box
       sx={{
         my: 6,
-        width: 500,
-        backgroundColor: 'white'
-        // display: 'flex',
-        // flexDirection: 'column',
-        // alignItems: 'center',
       }}
     >
-      <Pricing />
-    </Box> */}
-    <Box sx={{ my: 6, textAlign: 'center' }}>
+      <StripePricingTable />
+    </Box>
+    {/* <Box sx={{ my: 6, textAlign: 'center' }}>
       <Typography variant="h4" component="h2" gutterBottom>Pricing</Typography>
       <Grid container spacing={4} justifyContent="center">
         
@@ -208,7 +209,7 @@ export default function Home() {
                 sx={{
                   justifySelf: 'center',
                 }}
-                onClick={handleSubmit}
+                onClick={handlePurchasePro}
                 // onClick={handleProPlanClick}
                 // onClick={() => {router.push('/checkout?plan=pro')}}
               >
@@ -248,7 +249,7 @@ export default function Home() {
         </Grid>
 
       </Grid>
-    </Box>
+    </Box> */}
     </>
   );
 }
