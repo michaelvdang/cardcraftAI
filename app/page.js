@@ -24,7 +24,7 @@ export default function Home() {
     const userCredentials = await signInWithCustomToken(auth, token || '')
     // The userCredentials.user object can call the methods of
     // the Firebase platform as an authenticated user.
-    console.log('User:', userCredentials.user)
+    console.log('Home page User:', userCredentials.user)
   }
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export default function Home() {
               Content Input
             </Typography>
             <Typography variant="body1">
-              Enter your content, and our platform will automatically generate a set of flashcards for you. Whether it's for studying, revision, or learning new topics, the generated flashcards are optimized for your needs.
+              Enter your content, and our platform will automatically generate a set of flashcards for you. Whether it is for studying, revision, or learning new topics, the generated flashcards are optimized for your needs.
             </Typography>
           </Box>
         </Grid>
@@ -78,7 +78,7 @@ export default function Home() {
               Cloud Storage
             </Typography>
             <Typography variant="body1">
-              All your flashcard sets are securely stored in Cloud Firestore, ensuring that your learning materials are always accessible, no matter the device you're using.
+              All your flashcard sets are securely stored in Cloud Firestore, ensuring that your learning materials are always accessible, no matter the device you are using.
             </Typography>
           </Box>
         </Grid>
@@ -90,7 +90,7 @@ export default function Home() {
               Pro User Access
             </Typography>
             <Typography variant="body1">
-              As a Pro user, you'll have access to flashcard sets created by other free users. Expand your learning resources and discover new content by browsing shared flashcard sets.
+              As a Pro user, you will have access to flashcard sets created by other free users. Expand your learning resources and discover new content by browsing shared flashcard sets.
             </Typography>
           </Box>
         </Grid>

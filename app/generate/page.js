@@ -50,7 +50,7 @@ export default function Generate() {
 
     // Clean up the subscription
     return () => unsubscribe();
-  }, [auth]);
+  }, []);
 
   const saveFlashcards = async () => {
     if (!setName.trim()) {

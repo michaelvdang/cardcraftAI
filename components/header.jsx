@@ -19,7 +19,7 @@ const Header = ({title}) => {
   };
   
   const path = usePathname()
-  console.log(path)
+  console.log('Header path: ', path)
 
   const router = useRouter()
   const theme = useTheme();
@@ -56,8 +56,8 @@ const Header = ({title}) => {
               variant="contained"
               onClick={() => router.push('/')}
               sx={{
-                ":hover": { backgroundColor: '#c2c2c2' },
-                backgroundColor: path === '/' ? '#444444' : 'black'
+                ":hover": { backgroundColor: '#555555' },
+                backgroundColor: path === '/' ? '#333333' : 'black'
               }}
             >
               Home
@@ -65,8 +65,8 @@ const Header = ({title}) => {
             <Button
               variant="contained"
               sx={{
-                ":hover": { backgroundColor: '#c2c2c2' },
-                backgroundColor: path === '/generate' ? '#444444' : 'black'
+                ":hover": { backgroundColor: '#555555' },
+                backgroundColor: path === '/generate' ? '#333333' : 'black'
               }}
               onClick={() => router.push('/generate')}
             >
@@ -75,8 +75,8 @@ const Header = ({title}) => {
             <Button
               variant="contained"
               sx={{
-                ":hover": { backgroundColor: '#c2c2c2' },
-                backgroundColor: path === '/flashcards' ? '#444444' : 'black'
+                ":hover": { backgroundColor: '#555555' },
+                backgroundColor: path === '/flashcards' ? '#333333' : 'black'
               }}
               onClick={() => router.push('/flashcards')}
             >

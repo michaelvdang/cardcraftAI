@@ -96,7 +96,7 @@ const PricingTable = () => {
             </Box>
             <Typography variant="body1">
               - All features in Free Plan<br/>
-              - Access to other users' flashcard sets<br/>
+              - Access to other your own flashcard sets<br/>
               - Enhanced storage and management tools<br/>
               - Priority customer support
             </Typography>

@@ -1,6 +1,8 @@
 
 
 TODOs:
+- Add animation or hover effect to drawer menu 
+- Review code for appbar, burger menu, drawer
 - add stripe customerId to firestore 
 - use webhook to update user subscription type in firestore
 

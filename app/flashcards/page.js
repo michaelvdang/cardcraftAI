@@ -40,7 +40,7 @@ export default function Flashcard() {
       }
       setIsLoading(false)
     }
-    console.log("user: ", user)
+    console.log("flashcards useeffect user: ", user)
     getFlashcards()
   }, [user])
 
