@@ -3,8 +3,11 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Container, Typography, CircularProgress, Box, Button } from '@mui/material'
+import { useUser } from '@clerk/nextjs'
+import Header from '@/components/header'
 
 export default function ResultPage() {
+  const { user } = useUser()
   const router = useRouter()
   const searchParams = useSearchParams()
   const session_id = searchParams.get('session_id')
@@ -20,6 +23,7 @@ export default function ResultPage() {
         const res = await fetch(`/api/checkout-sessions?session_id=${session_id}`)
         const sessionData = await res.json()
         if (res.ok) {
+          console.log('sessionData: ', sessionData)
           setSession(sessionData)
         } else {
           setError(sessionData.error)
@@ -60,61 +64,32 @@ export default function ResultPage() {
 
   return (
     <>
-    <Container maxWidth="sm" sx={{textAlign: 'center', mt: 4}}>
-      {/* Header with Nav Buttons */}
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-        textAlign="center"
-        mt={4}
-        mb={4}
-      >
-        <Typography variant="h4" component="h1" gutterBottom>
-          Result
-        </Typography>
-
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 2,
-            height: '100%',
-          }}
-        >
-          <Button
-            variant="contained"
-            onClick={() => router.push('/')}
-          >
-            Home
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => router.push('/generate')}
-          >
-            Generate
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => router.push('/flashcards')}
-          >
-            Flashcards
-          </Button>
-        </Box>
-      </Box>
+    <Container maxWidth="xl" sx={{textAlign: 'center', mt: 4, height:"100vh"}}>
+      <Header title={"Payment Result"} />
 
       {/* Session Result */}
       {session.payment_status === 'paid' ? (
         <>
-          <Typography variant="h4">Thank you for your purchase!</Typography>
-          <Box sx={{mt: 2}}>
-            <Typography variant="h6">Session ID: {session_id}</Typography>
-            <Typography variant="body1">
-              We have received your payment. You will receive an email with the
-              order details shortly.
-            </Typography>
+          <Box
+            sx={{ 
+              mt: -16,
+              height: '100vh', // Make the Box take up the full viewport height
+              display: 'flex', // Use flexbox for centering
+              flexDirection: 'column', // Stack the children vertically
+              justifyContent: 'center', // Center vertically
+              alignItems: 'center', // Center horizontally
+            }}
+          >
+            <Typography variant="h4">Thank you for your purchase{user && (', ' + user?.firstName)}!</Typography>
+            <Box sx={{mt: 2}}>
+              {/* <Typography variant="h6">Session ID: {session_id}</Typography> */}
+              <Typography variant="body1">
+                We have received your payment. You will receive an email with the
+                order details shortly.
+              </Typography>
+            </Box>
           </Box>
-        </>
+          </>
       ) : (
         <>
           <Typography variant="h4">Payment failed</Typography>

@@ -3,3 +3,13 @@
 TODOs:
 - add stripe customerId to firestore 
 - use webhook to update user subscription type in firestore
+
+
+GUIDE:
+- to run local webhook:
+  - stripe listen --forward-to localhost:3000/webhook1234
+  - stripe trigger payment_intent.succeeded
+
+
+
+

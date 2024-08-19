@@ -3,12 +3,12 @@ import { useUser } from "@clerk/nextjs"
 import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { collection, doc, getDoc, getDocs } from "firebase/firestore"
-import { db } from "../../firebase"
-import { useRouter } from "next/navigation"
-import { useSearchParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
+import { usesetIdParams } from "next/navigation"
 import DeleteIcon from '@mui/icons-material/Delete';
 import Header from "@/components/header"
 import { SignedOut } from "@clerk/nextjs"
+import { db } from "../../../firebase"
 
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser()
@@ -17,9 +17,8 @@ export default function Flashcard() {
   const [isFlipped, setIsFlipped] = useState(false)
 
   const router = useRouter()
-
-  const searchParams = useSearchParams()
-  const search = searchParams.get('id')
+  const params = useParams();
+  const setId = params.id
 
   useEffect(() => {
     console.log('flipped: ', flipped)
@@ -27,9 +26,9 @@ export default function Flashcard() {
 
   useEffect(() => {
     async function getFlashcard() {
-      if (!search || !user) return
+      if (!setId || !user) return
       
-      const docRef = doc(collection(doc(collection(db, 'users'), user.id), 'flashcardSets'), search)
+      const docRef = doc(collection(doc(collection(db, 'users'), user.id), 'flashcardSets'), setId)
       const docSnap = await getDoc(docRef)
       
       if (docSnap.exists()) {
@@ -45,7 +44,7 @@ export default function Flashcard() {
       }
     }
     getFlashcard()
-  }, [search, user])
+  }, [setId, user])
 
   const handleCardClick = (index) => {
     for (let i = 0; i < flashcards.length; i++) {
@@ -60,7 +59,7 @@ export default function Flashcard() {
     const newFlashcards = [...flashcards]
     newFlashcards.splice(index, 1)
     setFlashcards(newFlashcards)
-    const docRef = doc(collection(doc(collection(db, 'users'), user.id), 'flashcardSets'), search)
+    const docRef = doc(collection(doc(collection(db, 'users'), user.id), 'flashcardSets'), setId)
     const batch = writeBatch(db)
     batch.update(docRef, {flashcards: newFlashcards})
     await batch.commit()

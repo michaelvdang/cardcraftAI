@@ -1,16 +1,17 @@
 'use client'
-import { useUser } from "@clerk/nextjs"
 import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, Typography } from "@mui/material"
 import { useRouter } from "next/navigation"
 import { Suspense, useEffect, useState } from "react"
 import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore"
 import { db } from "../../firebase"
+import { SignedOut, useUser } from "@clerk/nextjs";
+import Header from "@/components/header"
 
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser()
   const [flashcardSets, setFlashcardSets] = useState([])
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleCardClick = (id) => {
     router.push(`/flashcard?id=${id}`)
@@ -39,64 +40,45 @@ export default function Flashcard() {
       }
       setIsLoading(false)
     }
+    console.log("user: ", user)
     getFlashcards()
   }, [user])
 
-  return (
-    <Container maxWidth="md">
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-        textAlign="center"
-        mt={4}
-        mb={4}
-      >
-        <Typography variant="h4" component="h1" gutterBottom>
-          Flashcard Sets
-        </Typography>
 
+  return (
+    <Container maxWidth="xl">
+      <Header title={"Flashcard Sets"}/>
+        
+      {!user ? (
         <Box
-          sx={{
-            display: 'flex',
-            gap: 2,
-            height: '100%',
-          }}
+          sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: -20 }}
         >
-          <Button
-            variant="contained"
-            onClick={() => router.push('/')}
-          >
-            Home
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => router.push('/generate')}
-          >
-            Generate
-          </Button>
+          <Box>
+            You must be logged in to view flashcard sets.
+          </Box>
+          <Box mt={2}>
+            <SignedOut>
+              <Button sx={{backgroundColor: 'black', color: 'white', marginRight: 2, border: '2px solid black', ":hover": {backgroundColor: 'white', color: 'black'} }} color="inherit" href="/sign-in">Login</Button>
+              <Button sx={{ border: '2px solid black', ":hover": {backgroundColor: '#f5f5f5'}, marginRight: 2}}  color="inherit" href="/sign-up">Sign Up</Button>
+            </SignedOut>
+          </Box>
         </Box>
-      </Box>
-        
-        
-      {flashcardSets.length === 0 ? (
-        isLoading ? (
-            <Box sx={{ 
-                display: 'flex',
-                justifyContent: 'center',
-                // alignItems: 'center',
-                height: '100vh', // Full viewport height to center vertically
-              }}>
-              Loading...
-             </Box>
-          ) : (
-            <Box>You have no flashcard sets.</Box>
-          ) 
       ) : (
-        <Typography variant="body1" gutterBottom>
-          You have {flashcardSets.length} flashcard sets.
-        </Typography>
+        (flashcardSets.length === 0) ? (
+          isLoading ? (
+              <Box
+                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: -20 }}
+              >
+                Loading...
+              </Box>
+            ) : (
+              <Box>You have no flashcard sets.</Box>
+            ) 
+        ) : (
+          <Typography variant="body1" gutterBottom>
+            You have {flashcardSets.length} flashcard sets.
+          </Typography>
+        )
       )}
       <Grid container spacing={3} sx={{ mt: 4 }}>
         {flashcardSets.map((set, index) => (

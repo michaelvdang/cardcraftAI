@@ -22,6 +22,7 @@ import { useUser } from '@clerk/nextjs'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../../firebase'
 import { useRouter } from 'next/navigation'
+import Header from '@/components/header'
 
 export default function Generate() {
   const { user } = useUser()
@@ -126,74 +127,68 @@ export default function Generate() {
   }
 
   return (
-    <Container maxWidth="md">
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-        textAlign="center"
-        mt={4}
-        mb={4}
+    <Container maxWidth="xl" sx={{ width: '100%' }}>
+      <Header title={"Generate Flashcards"}/>
+      <Box 
+        sx={{ height: '100vh', width: '80%', margin: 'auto' }}
       >
-        <Typography variant="h4" component="h1" gutterBottom>
-        Generate Flashcards
-        </Typography>
-
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 2,
-            height: '100%',
-          }}
-        >
+        <Box sx={{ my: 4 }}>
+          <TextField
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            label="Enter text"
+            fullWidth
+            multiline
+            rows={4}
+            variant="outlined"
+            placeholder="Enter text here"
+            helperText={`${text.length}/500`} // Display character count
+            inputProps={{ maxLength: 500 }} // Limit to 500 characters
+            sx={{
+              mb: 2,
+              backgroundColor: '#c5c5c5',
+              '& .MuiOutlinedInput-root': {
+                backgroundColor: 'white', // Set background color for the input,
+                '& fieldset': {
+                  borderColor: 'gray', // Default border color
+                },
+                '&:hover fieldset': {
+                  borderColor: 'black', // Border color on hover
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: 'black', // Border color when focused
+                },
+              },
+              '& .MuiOutlinedInput-input': {
+                resize: 'vertical', // Allow resizing in both directions
+                overflow: 'auto', // To manage overflow when resizing
+              },
+              '& .MuiInputBase-input::placeholder': {
+                color: 'gray', // Default placeholder color
+              },
+              '& .MuiInputBase-input:focus::placeholder': {
+                color: 'black', // Placeholder color when focused
+              },
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: 'black', // Label color when focused
+              },
+            }}
+          />
           <Button
             variant="contained"
-            onClick={() => router.push('/')}
+            color="primary"
+            sx={{
+              ":hover": { backgroundColor: '#c2c2c2' },
+              backgroundColor: 'black'
+            }}
+            onClick={handleSubmit}
+            fullWidth
           >
-            Home
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => router.push('/flashcards')}
-          >
-            Flashcards
+            Generate Flashcards
           </Button>
         </Box>
       </Box>
-      <Box sx={{ my: 4 }}>
-        <TextField
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          label="Enter text"
-          fullWidth
-          multiline
-          rows={4}
-          variant="outlined"
-          placeholder="Enter text here"
-          helperText={`${text.length}/500`} // Display character count
-          inputProps={{ maxLength: 500 }} // Limit to 500 characters
-          sx={{
-            mb: 2,
-            backgroundColor: '#c5c5c5',
-            '& .MuiOutlinedInput-root': {
-              backgroundColor: 'white', // Set background color for the input
-            },
-            '& .MuiOutlinedInput-input': {
-              resize: 'vertical', // Allow resizing in both directions
-              overflow: 'auto', // To manage overflow when resizing
-            },
-          }}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleSubmit}
-          fullWidth
-        >
-          Generate Flashcards
-        </Button>
-      </Box>
+        
 
       {flashcards.length > 0 && (
         <Box sx={{ mt: 4 }}>
