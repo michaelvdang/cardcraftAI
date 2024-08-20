@@ -37,6 +37,7 @@ export default function Generate() {
   const handleCloseDialog = () => setDialogOpen(false)
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true)
+  const [isCreatingCards, setIsCreatingCards] = useState(false)
 
   useEffect(() => {
     if (user) {
@@ -119,7 +120,7 @@ export default function Generate() {
     }
   
     try {
-      console.log("text: ", text)
+      setIsCreatingCards(true)
       const response = await fetch('/api/generate', {
         method: 'POST',
         body: text,
@@ -131,6 +132,7 @@ export default function Generate() {
   
       const data = await response.json()
       setFlashcards(data)
+      setIsCreatingCards(false)
     } catch (error) {
       console.error('Error generating flashcards:', error)
       alert('An error occurred while generating flashcards. Please try again.')
@@ -216,10 +218,18 @@ export default function Generate() {
               >
                 Generate Flashcards
               </Button>
+            {isCreatingCards && (
+              <Box
+                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', m: 10 }}
+              >
+                Creating Flashcards...
+              </Box>
+            )}
             </Box>
           </Box>
         )
       )}
+
 
       {flashcards.length > 0 && (
         <Box sx={{ mt: -50 }}>

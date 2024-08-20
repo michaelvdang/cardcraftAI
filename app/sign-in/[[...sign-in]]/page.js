@@ -18,14 +18,14 @@ export default function SignInPage() {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      sx={{textAlign: 'center', my: 4}}
+      sx={{textAlign: 'center', height: '100vh'}}
     >
       {/* Page Title and Subtitle */}
-      <Box sx={{textAlign: 'center', my: 4}}>
+      {/* <Box sx={{textAlign: 'center', mb: 4}}>
         <Typography variant="h2" component="h1" gutterBottom>
           Sign In
         </Typography>
-      </Box>
+      </Box> */}
       <SignIn fallbackRedirectUrl={redirectTo} />
     </Box>
     </>
