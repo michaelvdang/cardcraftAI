@@ -32,9 +32,12 @@ const PricingTable = () => {
   return (
       <Box sx={{ my: 6, textAlign: 'center' }}>
         <Typography variant="h4" component="h2" gutterBottom>Pricing</Typography>
-        <Grid container justifyContent="center" pt="24px">
+        <Grid container justifyContent="center" pt="24px" gap={3}>
           
-          <Grid item xs={12} lg={4} sx={{borderRadius: '8px',":hover": {backgroundColor: '#fafafa' }}}>
+          <Grid item xs={12} lg={3} 
+            className='pricing-card'
+            // sx={{borderRadius: '8px',":hover": {backgroundColor: '#fafafa' }}}
+          >
             <Box sx={{ p: 3, textAlign: 'center' }}>
               <Typography variant="h5" component="h3" gutterBottom>Starter</Typography>
               <Typography variant="h6" color="textTertiary" gutterBottom>
@@ -70,7 +73,9 @@ const PricingTable = () => {
             </Box>
           </Grid>
 
-          <Grid item xs={12} lg={4} sx={{ border: '2px solid black', borderRadius: '8px', ":hover": {backgroundColor: '#fafafa'}, }}>
+          <Grid item xs={12} lg={3} className='pricing-card card-highlight'
+            // sx={{ border: '2px solid black', borderRadius: '8px', ":hover": {backgroundColor: '#fafafa'}, }}
+          >
             <Box sx={{ p: 3, textAlign: 'center' }}>
               <Typography variant="h5" component="h3" gutterBottom>
                 Pro (Test Mode)
@@ -82,13 +87,14 @@ const PricingTable = () => {
                 sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', m: 2 }}
               >
                 <Button 
+                  className='primary-button'
                   variant="contained" 
                   color="primary" 
-                  sx={{
-                    justifySelf: 'center', 
-                    backgroundColor: 'black' , 
-                    ":hover": {backgroundColor: '#c2c2c2'},
-                  }}
+                  // sx={{
+                  //   justifySelf: 'center', 
+                  //   backgroundColor: 'black' , 
+                  //   ":hover": {backgroundColor: '#c2c2c2'},
+                  // }}
                   onClick={handlePurchasePro}
                   // onClick={handleProPlanClick}
                   // onClick={() => {router.push('/checkout?plan=pro')}}
@@ -105,7 +111,9 @@ const PricingTable = () => {
             </Box>
           </Grid>
 
-          <Grid item xs={12} lg={4} sx={{ borderRadius: '8px', ":hover": {backgroundColor: '#fafafa'}, justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+          <Grid item xs={12} lg={3} className='pricing-card'
+            // sx={{ borderRadius: '8px', ":hover": {backgroundColor: '#fafafa'}, justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}
+          >
             <Box sx={{ p: 3, textAlign: 'center' }}>
               <Typography variant="h5" component="h3" gutterBottom>Ultimate</Typography>
               <Typography variant="h6" color="textTertiary" gutterBottom>
@@ -114,7 +122,10 @@ const PricingTable = () => {
               <Box
                 sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', m: 2 }}
               >
-                <Button variant="contained" sx={{justifySelf: 'center', backgroundColor: 'black', ":hover": {backgroundColor: '#c2c2c2'}}}>
+                <Button variant="contained" 
+                  // sx={{justifySelf: 'center', backgroundColor: 'black', ":hover": {backgroundColor: '#c2c2c2'}}}
+                  className='primary-button'
+                >
                   Contact Sales
                 </Button>
               </Box>

@@ -44,7 +44,8 @@ export default function Home() {
         backgroundPosition: 'center',
         width: '100%',
         minHeight: '400px',
-        paddingTop: '56.25%', // 16:9 aspect ratio (height / width * 100)
+        maxHeight: '600px',
+        paddingTop: '46.25%', // 16:9 aspect ratio (height / width * 100)
         position: 'relative', // Make it relative for absolute positioning of content
         // height: '60vh',
         // height: '400px', // Adjust the height as needed
@@ -67,44 +68,34 @@ export default function Home() {
             padding: 2,
           }}
         >
-          <Typography sx={{padding: 2, boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.4)', textShadow: '3px 2px 10px rgba(0, 0, 0, 0.7)', fontSize: {xs: '3rem', sm: '4rem', md: '6rem'}}} variant="h2" component="h1" gutterBottom>
+          <Typography sx={{backdropFilter: 'blur(2px)', color: 'white', padding: 2, boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.4)', textShadow: '3px 2px 10px rgba(0, 0, 0, 0.7)', fontSize: {xs: '3rem', sm: '4rem', md: '6rem'}}} variant="h2" component="h1" gutterBottom>
             CardCraft AI
           </Typography>
-          <Typography sx={{padding: 2, textShadow: '3px 2px 4px rgba(0, 0, 0, 0.4)'}} variant="h5" component="h2" gutterBottom>
+          <Typography sx={{color: 'white', padding: 2, textShadow: '0 0 12px rgba(0, 0, 0, 0.9)'}} variant="h5" component="h2" gutterBottom>
             The easiest way to create flashcards from your text.
           </Typography>
-          {/* <Button variant="contained" color="primary" sx={{mt: 2, mr: 2, backgroundColor: 'black', ":hover": {backgroundColor: '#c2c2c2'}}} href="/generate">
-            Create
-          </Button>
-          <Button variant="outlined" color="primary" sx={{mt: 2, color: 'black', borderColor: 'black', ":hover": {borderColor: 'black'}}} href="/flashcards">
-            View Flashcards
-          </Button> */}
           {/* CTA */}
           <Box sx={{ mt: { xs: 2, md: 4}, display: 'flex', justifyContent: 'center' }}>
             {user ? (
               <Button 
+                className='cta-button'
                 size='large'
                 variant="contained"
-                sx={{
-                  ":hover": { backgroundColor: '#000000', color: 'white' },
-                  color: 'black',
-                  backgroundColor: 'white',
-                  border: '2px solid black',
-                }}
                 href='/generate'
               >
                 Create
               </Button>
             ) : (
               <Button
+                className='cta-button'
                 size='large'
                 variant="contained"
-                sx={{
-                  ":hover": { backgroundColor: '#000000', color: 'white' },
-                  color: 'black',
-                  backgroundColor: 'white',
-                  border: '2px solid black',
-                }}
+                // sx={{
+                //   ":hover": { backgroundColor: '#000000', color: 'white' },
+                //   color: 'black',
+                //   backgroundColor: 'white',
+                //   border: '2px solid black',
+                // }}
                 onClick={() => router.push('/sign-in')}
               >
                 Log in

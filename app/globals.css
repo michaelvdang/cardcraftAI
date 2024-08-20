@@ -111,3 +111,104 @@ a {
     color-scheme: dark;
   }
 }
+
+/* Default styles for light mode */
+.cta-button {
+  color: white;
+  background-color: black;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.8);
+}
+
+.cta-button:hover {
+  background-color: #ffffff;
+  color: black;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.8);
+}
+/* .cta-button {
+  color: black;
+  background-color: white;
+  border: 2px solid black;
+}
+
+.cta-button:hover {
+  background-color: #000000;
+  color: white;
+} */
+
+.primary-button {
+  color: white;
+  background-color: black;
+}
+
+.primary-button:hover {
+  background-color: #ffffff;
+  color: black;
+}
+
+.pricing-card {
+  border-radius: 12px;
+  background-color: #f5f5f5;
+}
+
+.pricing-card:hover {
+  background-color: #f9f9f9;
+}
+
+.card-highlight {
+  border: 2px solid black;
+}
+
+/* Styles for dark mode */
+@media (prefers-color-scheme: dark) {
+  .cta-button {
+    color: white;
+    background-color: black;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.8);
+  }
+
+  .cta-button:hover {
+    background-color: #ffffff;
+    color: black;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.8);
+  }
+
+  /* .primary-button {
+    color: white;
+    background-color: black;
+  }
+  
+  .primary-button:hover {
+    background-color: #ffffff;
+    color: black;
+  } */
+
+  .primary-button {
+    color: black;
+    background-color: white;
+  }
+
+  .primary-button:hover {
+    background-color: #222222;
+    color: white;
+  }
+
+  .pricing-card {
+    border-radius: 12px;
+    background-color: #1d1d1d;
+  }
+
+  .pricing-card:hover {
+    background-color: #333333;
+  }
+
+  .card-highlight {
+    border: 2px solid white;
+  }
+
+}
+/* Apply scaling only on medium-sized devices and up */
+@media (min-width: 1200px) { /* Adjust the min-width as needed */
+  .card-highlight {
+    transform: scale(1.1);
+  }
+}

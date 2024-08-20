@@ -64,7 +64,7 @@ const Footer = () => {
         </Grid>
 
         {/* Copyright */}
-        <Box sx={{ marginTop: '20px', textAlign: 'center' }}>
+        <Box sx={{ marginTop: '40px', textAlign: 'center' }}>
         <Typography variant="body2" color="inherit">
           © {new Date().getFullYear()} CardCraft AI. All rights reserved.
         </Typography>

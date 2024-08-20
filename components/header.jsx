@@ -11,7 +11,24 @@ import Link from 'next/link';
 
 const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-
+  useEffect(() => {
+    const preventScroll = (e) => {
+      e.preventDefault();
+    };
+  
+    if (drawerOpen) {
+      document.addEventListener('wheel', preventScroll, { passive: false });
+      document.addEventListener('touchmove', preventScroll, { passive: false });
+    } else {
+      document.removeEventListener('wheel', preventScroll);
+      document.removeEventListener('touchmove', preventScroll);
+    }
+  
+    return () => {
+      document.removeEventListener('wheel', preventScroll);
+      document.removeEventListener('touchmove', preventScroll);
+    };
+  }, [drawerOpen]);
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
   };
@@ -123,8 +140,55 @@ const Header = () => {
           </Box>
       </Toolbar>
     </AppBar>
-    {/* Mobile Drawer */}
+    {/* Mobile Drawer Top*/}
     <Drawer
+      anchor="top"
+      open={drawerOpen}
+      onClose={handleDrawerClose}
+    >
+      <Box
+        role="presentation"
+        sx={{
+          position: 'fixed',
+          width: '100%',
+          height: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          backgroundColor: '#000000bb',
+          color: 'white',
+          backdropFilter: 'blur(5px)',
+          WebkitBackdropFilter: 'blur(5px)', // Ensure compatibility with WebKit browsers
+        }}
+      >
+        <List>
+          <ListItem sx={{display: 'flex', justifyContent: 'flex-end'}} >
+              <CloseIcon style={{ color: 'white'}} onClick={handleDrawerClose} sx={{ maxWidth: '22px', marginRight: '10px', ":hover": {opacity: 0.2}}} />
+          </ListItem>
+          
+          <ListItem sx={{":hover": {backgroundColor: '#555555'}}} onClick={handleDrawerClose} component="a" href="/">
+            <ListItemText primary="Home" />
+          </ListItem>
+          <ListItem sx={{":hover": {backgroundColor: '#555555'}}} onClick={handleDrawerClose} component="a" href="/generate">
+            <ListItemText primary="Create" />
+          </ListItem>
+          <ListItem sx={{":hover": {backgroundColor: '#555555'}}} onClick={handleDrawerClose} component="a" href="/flashcards">
+            <ListItemText primary="Flashcards" />
+          </ListItem>
+          <SignedOut>
+            <ListItem sx={{":hover": {backgroundColor: '#555555'}}} onClick={handleDrawerClose} component="a" href="/sign-in">
+              <ListItemText primary="Login" />
+            </ListItem>
+          </SignedOut>
+          <SignedIn>
+            <ListItem sx={{":hover": {backgroundColor: '#555555'}}} onClick={handleLogout} component="a" href="#">
+              <ListItemText primary="Log Out" />
+            </ListItem>
+          </SignedIn>
+        </List>
+      </Box>
+    </Drawer>
+    {/* Mobile Drawer Right */}
+    {/* <Drawer
       anchor="right"
       open={drawerOpen}
       onClose={handleDrawerClose}
@@ -166,7 +230,7 @@ const Header = () => {
           </SignedIn>
         </List>
       </Box>
-    </Drawer>
+    </Drawer> */}
     </>
   )
 }
