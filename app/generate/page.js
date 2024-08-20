@@ -105,7 +105,7 @@ export default function Generate() {
       alert('Flashcards saved successfully!')
       handleCloseDialog()
       setSetName('')
-      router.push('/flashcard?id=' + setName)
+      router.push('/flashcards/view?setId=' + setName)
     } catch (error) {
       console.error('Error saving flashcards:', error)
       alert('An error occurred while saving flashcards. Please try again.')
