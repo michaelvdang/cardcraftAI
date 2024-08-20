@@ -35,8 +35,7 @@ export default function Home() {
   
   return (
     <>
-      <Header title="Flashcard SaaS" />
-    <Container  maxWidth="xl" sx={{minHeight: '100vh', paddingTop: {xs: '50px', md: '60px'}, }}>
+    <Container  maxWidth="xl" sx={{minHeight: '100vh', paddingTop: {xs: '50px', md: '60px'} }}>
 
 
 
@@ -54,6 +53,7 @@ export default function Home() {
         <Button variant="outlined" color="primary" sx={{mt: 2, color: 'black', borderColor: 'black', ":hover": {borderColor: 'black'}}} href="/flashcards">
           View Flashcards
         </Button>
+        <Box id="features" height="30px"/>
       </Box>
 
       {/* Features */}
@@ -108,9 +108,11 @@ export default function Home() {
             </Box>
           </Grid>
         </Grid>
+        <Box id="pricing" height="30px"/>
       </Box>
 
       {/* Pricing section */}
+
       {/* <Box
         sx={{
           my: 6,

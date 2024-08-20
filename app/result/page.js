@@ -64,7 +64,6 @@ export default function ResultPage() {
 
   return (
     <>
-      <Header title={"Payment Result"} />
     <Container maxWidth="xl" sx={{textAlign: 'center', mt: 4, height:"100vh"}}>
       {/* Page Title and Subtitle */}
       <Box sx={{textAlign: 'center', my: 4}}>

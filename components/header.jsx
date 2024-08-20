@@ -5,7 +5,9 @@ import { usePathname, useRouter } from 'next/navigation'
 import { SignedIn, SignedOut, UserButton, SignInButton, SignInWithMetamaskButton, useUser, useAuth, SignOutButton, useClerk } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
 import MenuIcon from '@mui/icons-material/Menu';
-
+import CloseIcon from '@mui/icons-material/Close';
+import { Opacity } from '@mui/icons-material';
+import Link from 'next/link';
 
 const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -36,8 +38,8 @@ const Header = () => {
     <>
 
     {/* App Bar */}
-    <AppBar position="fixed" color="transparent" sx={{backgroundColor: '#000000bb', height: {xs: '50px', md: '60px'}, display: 'flex', justifyContent: 'center', backdropFilter: 'blur(25px)'}}>
-      <Toolbar>
+    <AppBar position="fixed" color="transparent" sx={{backgroundColor: '#000000bb', height: {xs: '50px', md: '60px'}, display: 'flex', justifyContent: 'center', alignItems: 'center', backdropFilter: 'blur(25px)'}}>
+      <Toolbar sx={{maxWidth: '1600px', width: '100%'}}>
           <Typography color={'white'} sx={{width: {xs: '150px', md: '240px'}, textAlign: 'center'}} variant="h6" marginRight={2} fontSize={{xs: '1.2rem', md: '1.5rem'}}>
             Flashcard SaaS
           </Typography>
@@ -107,7 +109,7 @@ const Header = () => {
               color="inherit"
               onClick={handleDrawerOpen}
             >
-              <MenuIcon />
+              <MenuIcon style={{ color: 'white' }} />
             </IconButton>
           </Box>
       </Toolbar>
@@ -124,27 +126,32 @@ const Header = () => {
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          backgroundColor: 'black',
+          backgroundColor: '#000000bb',
           color: 'white',
+          backdropFilter: 'blur(5px)',
         }}
       >
         <List>
-          <ListItem onClick={handleDrawerClose} component="a" href="/">
+          <ListItem sx={{display: 'flex', justifyContent: 'flex-end'}} >
+              <CloseIcon style={{ color: 'white'}} onClick={handleDrawerClose} sx={{ maxWidth: '22px', marginRight: '10px', ":hover": {opacity: 0.2}}} />
+          </ListItem>
+          
+          <ListItem sx={{":hover": {backgroundColor: '#555555'}}} onClick={handleDrawerClose} component="a" href="/">
             <ListItemText primary="Home" />
           </ListItem>
-          <ListItem onClick={handleDrawerClose} component="a" href="/generate">
+          <ListItem sx={{":hover": {backgroundColor: '#555555'}}} onClick={handleDrawerClose} component="a" href="/generate">
             <ListItemText primary="Generate" />
           </ListItem>
-          <ListItem onClick={handleDrawerClose} component="a" href="/flashcards">
+          <ListItem sx={{":hover": {backgroundColor: '#555555'}}} onClick={handleDrawerClose} component="a" href="/flashcards">
             <ListItemText primary="Flashcards" />
           </ListItem>
           <SignedOut>
-            <ListItem onClick={handleDrawerClose} component="a" href="/sign-in">
+            <ListItem sx={{":hover": {backgroundColor: '#555555'}}} onClick={handleDrawerClose} component="a" href="/sign-in">
               <ListItemText primary="Login" />
             </ListItem>
           </SignedOut>
           <SignedIn>
-            <ListItem onClick={handleLogout} component="a" href="#">
+            <ListItem sx={{":hover": {backgroundColor: '#555555'}}} onClick={handleLogout} component="a" href="#">
               <ListItemText primary="Log Out" />
             </ListItem>
           </SignedIn>

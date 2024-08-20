@@ -12,13 +12,14 @@ export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser()
   const [flashcardSets, setFlashcardSets] = useState([])
   const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
-  const handleCardClick = (id) => {
-    console.log('id: ', id)
-    router.push(`/flashcards/id=${id}`)
-  }
-
+  useEffect(() => {
+    if (user) {
+      setIsLoading(false)
+    }
+  }, [user])
+  
   useEffect(() => {
     async function getFlashcards() {
       if (!user) return
@@ -48,7 +49,6 @@ export default function Flashcard() {
 
   return (
     <>
-      <Header/>
     <Container maxWidth="xl" sx={{minHeight: '100vh', paddingTop: {xs: '50px', md: '60px'}, }}>
       {/* Page Title and Subtitle */}
       <Box sx={{textAlign: 'center', my: 4}}>
@@ -56,35 +56,41 @@ export default function Flashcard() {
           Flashcards
         </Typography>
       </Box>
-      {!user ? (
+      {isLoading ? (
         <Box
           sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: -20 }}
         >
           <Box>
-            You must be logged in to view flashcard sets.
-          </Box>
-          <Box mt={2}>
-            <SignedOut>
-              <Button sx={{backgroundColor: 'black', color: 'white', marginRight: 2, border: '2px solid black', ":hover": {backgroundColor: 'white', color: 'black'} }} color="inherit" href="/sign-in">Login</Button>
-              <Button sx={{ border: '2px solid black', ":hover": {backgroundColor: '#f5f5f5'}, marginRight: 2}}  color="inherit" href="/sign-up">Sign Up</Button>
-            </SignedOut>
+            Loading...
           </Box>
         </Box>
-      ) : (
-        (flashcardSets.length === 0) ? (
-          isLoading ? (
-              <Box
-                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: -20 }}
-              >
-                Loading...
-              </Box>
-            ) : (
-              <Box>You have no flashcards.</Box>
-            ) 
         ) : (
-          <Typography variant="body1" gutterBottom>
-            You have {flashcardSets.length} flashcard sets.
-          </Typography>
+        !user ? (
+          <Box
+            sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: -20 }}
+          >
+            <Box>
+              You must be logged in to view flashcard sets.
+            </Box>
+            <Box mt={2}>
+              <SignedOut>
+                <Button sx={{backgroundColor: 'black', color: 'white', marginRight: 2, border: '2px solid black', ":hover": {backgroundColor: 'white', color: 'black'} }} color="inherit" href="/sign-in">Login</Button>
+                <Button sx={{ border: '2px solid black', ":hover": {backgroundColor: '#f5f5f5'}, marginRight: 2}}  color="inherit" href="/sign-up">Sign Up</Button>
+              </SignedOut>
+            </Box>
+          </Box>
+        ) : (
+          (flashcardSets.length === 0) && (
+            isLoading ? (
+                <Box
+                  sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: -20 }}
+                >
+                  Loading...
+                </Box>
+              ) : (
+                <Box>You have no flashcards.</Box>
+              ) 
+          )
         )
       )}
       <Grid container spacing={3} sx={{ mt: 4 }}>

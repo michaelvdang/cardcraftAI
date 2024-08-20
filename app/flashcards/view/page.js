@@ -1,6 +1,6 @@
 'use client'
 import { useUser } from "@clerk/nextjs"
-import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, Typography } from "@mui/material"
+import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material"
 import { useEffect, useState } from "react"
 import { collection, doc, getDoc, getDocs } from "firebase/firestore"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
@@ -10,11 +10,13 @@ import Header from "@/components/header"
 import { SignedOut } from "@clerk/nextjs"
 import { db } from "../../../firebase"
 
+
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser()
   const [flashcards, setFlashcards] = useState([])
   const [flipped, setFlipped] = useState({})
   const [isFlipped, setIsFlipped] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const router = useRouter()
   // const params = useParams(); // read path params
@@ -24,8 +26,10 @@ export default function Flashcard() {
   console.log("setId: ", setId)
 
   useEffect(() => {
-    console.log('flipped: ', flipped)
-  }, [flipped])
+    if (user) {
+      setIsLoading(false)
+    }
+  }, [user])
 
   useEffect(() => {
     async function getFlashcard() {
@@ -58,7 +62,7 @@ export default function Flashcard() {
     }
   }
 
-  const handleDelete = async (index) => {
+  const deleteItem = async (index) => {
     const newFlashcards = [...flashcards]
     newFlashcards.splice(index, 1)
     setFlashcards(newFlashcards)
@@ -67,27 +71,27 @@ export default function Flashcard() {
     batch.update(docRef, {flashcards: newFlashcards})
     await batch.commit()
   }
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleDelete = () => {
+    // Add your delete logic here
+    deleteItem();
+    console.log("Item deleted");
+    setOpen(false);
+  };
   
   return (
     <>
-      <Header />
-    <Container maxWidth="md" sx={{ minHeight: '100vh', paddingTop: {xs: '50px', md: '60px'}, }}>
+    <Container maxWidth="lg" sx={{ minHeight: '100vh', paddingTop: {xs: '50px', md: '60px'}, }}>
 
-      {!user ? (
-        <Box
-          sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: -20 }}
-        >
-          <Box>
-            You must be logged in to view flashcards.
-          </Box>
-          <Box mt={2}>
-            <SignedOut>
-              <Button sx={{backgroundColor: 'black', color: 'white', marginRight: 2, border: '2px solid black', ":hover": {backgroundColor: 'white', color: 'black'} }} color="inherit" href="/sign-in">Login</Button>
-              <Button sx={{ border: '2px solid black', ":hover": {backgroundColor: '#f5f5f5'}, marginRight: 2}}  color="inherit" href="/sign-up">Sign Up</Button>
-            </SignedOut>
-          </Box>
-        </Box>
-      ) : (
         <>
         {/* Page Title and Subtitle */}
         <Box sx={{textAlign: 'center', my: 4}}>
@@ -96,95 +100,215 @@ export default function Flashcard() {
           </Typography>
         </Box>
           
-        <Grid container spacing={3} sx={{ mt: 4, mb: 4 }}>
-          {flashcards.map((flashcard, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Card>
-                <CardActionArea onClick={() => handleCardClick(index)}>
-                  <CardContent>
-                    <Box
-                      sx={{
-                        perspective: '1000px', // Perspective to create a 3D effect
-                        width: '300px',
-                        height: '200px',
-                      }}
-                    >
+        {isLoading ? (
+        <Box
+          sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: -20 }}
+        >
+          <Box>
+            Loading...
+          </Box>
+        </Box>
+        ) : (
+          !user ? (
+            <Box
+              sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: -20 }}
+            >
+              <Box>
+                You must be logged in to view flashcards.
+              </Box>
+              <Box mt={2}>
+                <SignedOut>
+                  <Button sx={{backgroundColor: 'black', color: 'white', marginRight: 2, border: '2px solid black', ":hover": {backgroundColor: 'white', color: 'black'} }} color="inherit" href="/sign-in">Login</Button>
+                  <Button sx={{ border: '2px solid black', ":hover": {backgroundColor: '#f5f5f5'}, marginRight: 2}}  color="inherit" href="/sign-up">Sign Up</Button>
+                </SignedOut>
+              </Box>
+            </Box>
+          ) : (
+          <Grid container spacing={3} sx={{ mt: 4, mb: 4 }}>
+            {flashcards.map((flashcard, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Card>
+                  <CardActionArea  onClick={() => handleCardClick(index)}>
+                    <CardContent sx={{padding: 0}}>
                       <Box
                         sx={{
-                          position: 'relative',
-                          width: '100%',
-                          height: '100%',
-                          textAlign: 'center',
-                          transition: 'transform 0.6s',
-                          transformStyle: 'preserve-3d',
-                          transform: flipped[index] ? 'rotateY(180deg)' : 'rotateY(0deg)', // Flip based on state
+                          perspective: '1000px', // Perspective to create a 3D effect
+                          height: '200px',
                         }}
                       >
-                        {/* Front side */}
                         <Box
                           sx={{
-                            position: 'absolute',
+                            position: 'relative',
                             width: '100%',
                             height: '100%',
-                            backfaceVisibility: 'hidden',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: '#fff', // Front side background color
+                            textAlign: 'center',
+                            transition: 'transform 0.6s',
+                            transformStyle: 'preserve-3d',
+                            transform: flipped[index] ? 'rotateY(180deg)' : 'rotateY(0deg)', // Flip based on state
                           }}
                         >
-                          <Typography variant="h5" component="div">
-                            {flashcard.front}
-                          </Typography>
-                        </Box>
+                          {/* Front side */}
+                          <Box
+                            sx={{
+                              position: 'absolute',
+                              width: '100%',
+                              height: '100%',
+                              backfaceVisibility: 'hidden',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              backgroundColor: '#fff', // Front side background color
+                              padding: '16px', // Optional: Adds padding inside the box
+                            }}
+                          >
+                            <Typography 
+                              variant="h5" 
+                              component="div"
+                              sx={{
+                                wordWrap: 'break-word', // Wraps long words onto the next line
+                                overflowWrap: 'break-word', // Ensures overflow text is wrapped
+                                textAlign: 'center', // Optional: Center align the text
+                                width: '100%', // Ensures text takes up full width of the container
+                              }}
+                            >
+                              {flashcard.front}
+                            </Typography>
+                          </Box>
 
-                        {/* Back side */}
-                        <Box
-                          sx={{
-                            position: 'absolute',
-                            width: '100%',
-                            height: '100%',
-                            backfaceVisibility: 'hidden',
-                            transform: 'rotateY(180deg)', // Start back side rotated
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: '#d0d0d0', // Back side background color
-                          }}
-                        >
-                          <Typography variant="h5" component="div">
-                            {flashcard.back}
-                          </Typography>
+                          {/* Back side */}
+                          <Box
+                            sx={{
+                              position: 'absolute',
+                              width: '100%',
+                              height: '100%',
+                              backfaceVisibility: 'hidden',
+                              transform: 'rotateY(180deg)', // Start back side rotated
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              backgroundColor: '#333333', // Back side background color
+                              padding: '16px', // Optional: Adds padding inside the box
+                              // boxSizing: 'border-box', // Ensures padding doesn't affect box size
+                              color: '#fff', // Back side text color
+                            }}
+                          >
+                            <Typography 
+                              variant="h5" 
+                              component="div" 
+                              sx={{
+                                wordWrap: 'break-word', // Wraps long words onto the next line
+                                overflowWrap: 'break-word', // Ensures overflow text is wrapped
+                                textAlign: 'center', // Optional: Center align the text
+                                width: '100%', // Ensures text takes up full width of the container
+                              }}
+                            >
+                              {flashcard.back}
+                            </Typography>
+                          </Box>
                         </Box>
                       </Box>
-                    </Box>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )
+        )}
         {flashcards.length > 0 && (
           <Box
             sx={{
               display: 'flex',
               justifyContent: 'center',
             }}
+            marginBottom={5}
           >
             <Button 
               sx={{ 
-              color: 'white', 
-              borderColor: 'red', 
-              backgroundColor: 'red'}} 
-              variant="outlined" 
+                color: 'red', 
+                borderColor: 'red', 
+                backgroundColor: 'white',
+                ":hover": {backgroundColor: '#fff3f3'}
+              }} 
+              variant="contained"
               startIcon={<DeleteIcon />}
-              onClick={handleDelete}>
+              onClick={handleClickOpen}>
               Delete
             </Button>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="confirm-delete-title"
+              sx={{
+                '& .MuiBackdrop-root': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                },
+              }}
+              PaperProps={{
+                sx: {
+                  minWidth: 300,
+                },
+              }}
+              disableScrollLock={false}
+            >
+              <DialogTitle
+               sx={{
+                 backgroundColor: '#000000bb',
+                 color: 'white',
+               }}
+               id="confirm-delete-title">
+                Confirm Delete
+              </DialogTitle>
+              <DialogContent
+                sx={{
+                  padding: 2,
+                  backgroundColor: 'white',
+                  color: 'black',
+                }}
+              >
+                <Typography
+                  sx={{
+                    padding: 2, 
+                  }}
+                  variant="h6">
+                  Are you sure you want to delete this card set? This action cannot be undone.
+                </Typography>
+              </DialogContent>
+              <DialogActions
+                sx={{
+                  padding: 2,
+                  backgroundColor: 'white',
+                  color: 'white',
+                  justifyContent: 'center',
+                }}
+              >
+                <Button
+                  sx={{ 
+                    color: 'black', 
+                    backgroundColor: 'white',
+                    ":hover": {backgroundColor: '#f8f8f8'}
+                  }}  
+                  onClick={handleClose} 
+                  variant="contained"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  sx={{ 
+                    color: 'white', 
+                    backgroundColor: 'red',
+                    ":hover": {backgroundColor: '#ff000099'}
+                  }}  
+                  onClick={handleClose} 
+                  variant="contained"
+                >
+                  Delete
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Box>
         )}
         </>
-      )}
     </Container>
     </>
   )

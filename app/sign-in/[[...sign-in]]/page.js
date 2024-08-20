@@ -13,7 +13,6 @@ export default function SignInPage() {
   
   return (
     <>
-    <Header />
     <Box
       display="flex"
       flexDirection="column"
