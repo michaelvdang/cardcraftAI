@@ -67,10 +67,10 @@ export default function Home() {
             padding: 2,
           }}
         >
-          <Typography variant="h2" component="h1" gutterBottom>
+          <Typography sx={{padding: 2, boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.4)', textShadow: '3px 2px 10px rgba(0, 0, 0, 0.7)', fontSize: {xs: '3rem', sm: '4rem', md: '6rem'}}} variant="h2" component="h1" gutterBottom>
             CardCraft AI
           </Typography>
-          <Typography variant="h5" component="h2" gutterBottom>
+          <Typography sx={{padding: 2, textShadow: '3px 2px 4px rgba(0, 0, 0, 0.4)'}} variant="h5" component="h2" gutterBottom>
             The easiest way to create flashcards from your text.
           </Typography>
           {/* <Button variant="contained" color="primary" sx={{mt: 2, mr: 2, backgroundColor: 'black', ":hover": {backgroundColor: '#c2c2c2'}}} href="/generate">
@@ -80,7 +80,7 @@ export default function Home() {
             View Flashcards
           </Button> */}
           {/* CTA */}
-          <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+          <Box sx={{ mt: { xs: 2, md: 4}, display: 'flex', justifyContent: 'center' }}>
             {user ? (
               <Button 
                 size='large'
