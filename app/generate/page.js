@@ -37,13 +37,17 @@ export default function Generate() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true)
 
-
   useEffect(() => {
     if (user) {
       setIsLoading(false)
     }
+    else {
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 3000);
+    }
   }, [user])
-  
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -155,12 +159,11 @@ export default function Generate() {
             sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: -20 }}
           >
             <Box>
-              You must be logged in to view flashcard sets.
+              You must be logged in to view flashcards.
             </Box>
             <Box mt={2}>
               <SignedOut>
                 <Button sx={{backgroundColor: 'black', color: 'white', marginRight: 2, border: '2px solid black', ":hover": {backgroundColor: 'white', color: 'black'} }} color="inherit" href="/sign-in">Login</Button>
-                <Button sx={{ border: '2px solid black', ":hover": {backgroundColor: '#f5f5f5'}, marginRight: 2}}  color="inherit" href="/sign-up">Sign Up</Button>
               </SignedOut>
             </Box>
           </Box>

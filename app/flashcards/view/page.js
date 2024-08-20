@@ -29,6 +29,11 @@ export default function Flashcard() {
     if (user) {
       setIsLoading(false)
     }
+    else {
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 3000);
+    }
   }, [user])
 
   useEffect(() => {
@@ -119,7 +124,6 @@ export default function Flashcard() {
               <Box mt={2}>
                 <SignedOut>
                   <Button sx={{backgroundColor: 'black', color: 'white', marginRight: 2, border: '2px solid black', ":hover": {backgroundColor: 'white', color: 'black'} }} color="inherit" href="/sign-in">Login</Button>
-                  <Button sx={{ border: '2px solid black', ":hover": {backgroundColor: '#f5f5f5'}, marginRight: 2}}  color="inherit" href="/sign-up">Sign Up</Button>
                 </SignedOut>
               </Box>
             </Box>
