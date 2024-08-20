@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image';
 import { AppBar, Toolbar, Typography, Button, Box, Grid, useTheme, useMediaQuery, IconButton, Drawer, List, ListItem, ListItemText, Container } from "@mui/material";
 import { SignedIn, SignedOut, UserButton, SignInButton, SignInWithMetamaskButton, useUser, useAuth } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
@@ -35,30 +36,70 @@ export default function Home() {
   
   return (
     <>
-    <Container  maxWidth="xl" sx={{minHeight: '100vh', paddingTop: {xs: '50px', md: '60px'} }}>
-
-
-
+    <Container  maxWidth="xl" sx={{minHeight: '100vh', }}>
       {/* Hero */}
-      <Box sx={{textAlign: 'center', my: 4}}>
+      <Box sx={{
+        textAlign: 'center', 
+        my: 4,
+        backgroundImage: 'url(/assets/cube.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        height: '400px', // Adjust the height as needed
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        // color: 'white', // Text color that contrasts with the background
+      }}>
         <Typography variant="h2" component="h1" gutterBottom>
           Welcome to Flashcard SaaS
         </Typography>
         <Typography variant="h5" component="h2" gutterBottom>
           The easiest way to create flashcards from your text.
         </Typography>
-        <Button variant="contained" color="primary" sx={{mt: 2, mr: 2, backgroundColor: 'black', ":hover": {backgroundColor: '#c2c2c2'}}} href="/generate">
+        {/* <Button variant="contained" color="primary" sx={{mt: 2, mr: 2, backgroundColor: 'black', ":hover": {backgroundColor: '#c2c2c2'}}} href="/generate">
           Create
         </Button>
         <Button variant="outlined" color="primary" sx={{mt: 2, color: 'black', borderColor: 'black', ":hover": {borderColor: 'black'}}} href="/flashcards">
           View Flashcards
-        </Button>
-        <Box id="features" height="30px"/>
+        </Button> */}
       </Box>
+        <Box id="features" height="30px"/>
 
+      {/* CTA */}
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        {user ? (
+          <Button 
+            size='large'
+            variant="contained"
+            sx={{
+              ":hover": { backgroundColor: '#000000', color: 'white' },
+              color: 'black',
+              backgroundColor: 'white',
+              border: '2px solid black',
+            }}
+            href='/generate'
+          >
+            Create
+          </Button>
+        ) : (
+          <Button
+            size='large'
+            variant="contained"
+            sx={{
+              ":hover": { backgroundColor: '#000000', color: 'white' },
+              color: 'black',
+              backgroundColor: 'white',
+              border: '2px solid black',
+            }}
+            onClick={() => router.push('/sign-in')}
+          >
+            Log in
+          </Button>
+        )}
+      </Box>
       {/* Features */}
       <Box sx={{ my: 6 }}>
-        <Typography variant="h4" component="h2" gutterBottom>Features</Typography>
+        <Typography textAlign={'center'} variant="h4" component="h2" gutterBottom>Features</Typography>
         <Grid container spacing={4}>
           {/* Feature 1: Content Input */}
           <Grid item xs={12} md={6}>

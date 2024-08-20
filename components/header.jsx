@@ -89,7 +89,16 @@ const Header = () => {
             {/* </Box> */}
             { path !== '/sign-in' && 
               <SignedOut>
-                <Button sx={{ border: '2px solid white', ":hover": {backgroundColor: '#333333'}, marginRight: 2}}  color="inherit" href={`/sign-in?redirectTo=${(path)}`}>Login</Button>
+                <Button 
+                  variant="contained"
+                  sx={{
+                    ":hover": { backgroundColor: '#555555' },
+                    backgroundColor: path === '/generate' ? '#333333' : 'black'
+                  }}
+                  href={`/sign-in?redirectTo=${(path)}`}
+                >
+                  Log in
+                </Button>
               </SignedOut>
             }
             <SignedIn>

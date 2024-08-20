@@ -72,7 +72,9 @@ const PricingTable = () => {
 
           <Grid item xs={12} lg={4} sx={{ border: '2px solid black', borderRadius: '8px', ":hover": {backgroundColor: '#fafafa'}, }}>
             <Box sx={{ p: 3, textAlign: 'center' }}>
-              <Typography variant="h5" component="h3" gutterBottom>Pro</Typography>
+              <Typography variant="h5" component="h3" gutterBottom>
+                Pro (Test Mode)
+              </Typography>
               <Typography variant="h6" color="textTertiary" gutterBottom>
                 $9.99 / month
               </Typography>
@@ -91,7 +93,7 @@ const PricingTable = () => {
                   // onClick={handleProPlanClick}
                   // onClick={() => {router.push('/checkout?plan=pro')}}
                 >
-                  Choose Pro
+                  Free (Test Mode)
                 </Button>
               </Box>
               <Typography variant="body1">
