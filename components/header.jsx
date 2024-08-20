@@ -36,13 +36,9 @@ const Header = () => {
     <>
 
     {/* App Bar */}
-    <AppBar position="static" sx={{backgroundColor: 'black'}}>
+    <AppBar position="fixed" color="transparent" sx={{backgroundColor: '#000000bb', height: {xs: '50px', md: '60px'}, display: 'flex', justifyContent: 'center', backdropFilter: 'blur(25px)'}}>
       <Toolbar>
-        {/* <Box
-          width={'100%'}
-          display={'flex'}
-        > */}
-          <Typography sx={{width: '180px', textAlign: 'center'}} variant="h6" marginRight={2}>
+          <Typography color={'white'} sx={{width: {xs: '150px', md: '240px'}, textAlign: 'center'}} variant="h6" marginRight={2} fontSize={{xs: '1.2rem', md: '1.5rem'}}>
             Flashcard SaaS
           </Typography>
 
@@ -91,9 +87,6 @@ const Header = () => {
             {/* </Box> */}
             { path !== '/sign-in' && 
               <SignedOut>
-                {/* <SignInButton />
-                <SignInWithMetamaskButton /> */}
-                {/* <Button sx={{backgroundColor: 'white', color: 'black', marginRight: 2, border: '2px solid white', ":hover": {backgroundColor: 'black',  color: 'white'} }} color="inherit" href="/sign-in">Login</Button> */}
                 <Button sx={{ border: '2px solid white', ":hover": {backgroundColor: '#333333'}, marginRight: 2}}  color="inherit" href={`/sign-in?redirectTo=${(path)}`}>Login</Button>
               </SignedOut>
             }
@@ -136,11 +129,6 @@ const Header = () => {
         }}
       >
         <List>
-          {/* <SignedIn>
-            <ListItem onClick={handleDrawerClose}>
-              <ListItemText primary="User" />
-            </ListItem>
-          </SignedIn> */}
           <ListItem onClick={handleDrawerClose} component="a" href="/">
             <ListItemText primary="Home" />
           </ListItem>
@@ -152,20 +140,13 @@ const Header = () => {
           </ListItem>
           <SignedOut>
             <ListItem onClick={handleDrawerClose} component="a" href="/sign-in">
-              <ListItemText primary="Login/Register" />
+              <ListItemText primary="Login" />
             </ListItem>
-            {/* <ListItem onClick={handleDrawerClose} component="a" href="/sign-up">
-              <ListItemText primary="Sign Up" />
-            </ListItem> */}
           </SignedOut>
           <SignedIn>
             <ListItem onClick={handleLogout} component="a" href="#">
               <ListItemText primary="Log Out" />
             </ListItem>
-            {/* <SignOutButton /> */}
-            {/* <ListItem button onClick={handleDrawerClose}>
-              <ListItemText primary="User" />
-            </ListItem> */}
           </SignedIn>
         </List>
       </Box>

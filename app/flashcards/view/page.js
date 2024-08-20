@@ -3,7 +3,7 @@ import { useUser } from "@clerk/nextjs"
 import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { collection, doc, getDoc, getDocs } from "firebase/firestore"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { usesetIdParams } from "next/navigation"
 import DeleteIcon from '@mui/icons-material/Delete';
 import Header from "@/components/header"
@@ -17,8 +17,11 @@ export default function Flashcard() {
   const [isFlipped, setIsFlipped] = useState(false)
 
   const router = useRouter()
-  const params = useParams(); // read path params
-  const setId = params.id
+  // const params = useParams(); // read path params
+  // const setId = params.id
+
+  const setId = useSearchParams().get('setId');
+  console.log("setId: ", setId)
 
   useEffect(() => {
     console.log('flipped: ', flipped)
@@ -66,8 +69,9 @@ export default function Flashcard() {
   }
   
   return (
-    <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
-      <Header title={"Flashcards"}/>
+    <>
+      <Header />
+    <Container maxWidth="md" sx={{ minHeight: '100vh', paddingTop: {xs: '50px', md: '60px'}, }}>
 
       {!user ? (
         <Box
@@ -85,45 +89,11 @@ export default function Flashcard() {
         </Box>
       ) : (
         <>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-          }}
-          textAlign="center"
-          mt={4}
-          mb={4}
-        >
-          <Typography variant="h4" component="h1" gutterBottom>
+        {/* Page Title and Subtitle */}
+        <Box sx={{textAlign: 'center', my: 4}}>
+          <Typography variant="h2" component="h1" gutterBottom>
             Flashcards
           </Typography>
-
-          <Box
-            sx={{
-              display: 'flex',
-              gap: 2,
-              height: '100%',
-            }}
-          >
-            <Button
-              variant="contained"
-              onClick={() => router.push('/')}
-            >
-              Home
-            </Button>
-            <Button
-              variant="contained"
-              onClick={() => router.push('/flashcards')}
-            >
-              Flashcards
-            </Button>
-            <Button
-              variant="contained"
-              onClick={() => router.push('/generate')}
-            >
-              Generate
-            </Button>
-          </Box>
         </Box>
           
         <Grid container spacing={3} sx={{ mt: 4, mb: 4 }}>
@@ -216,5 +186,6 @@ export default function Flashcard() {
         </>
       )}
     </Container>
+    </>
   )
 }

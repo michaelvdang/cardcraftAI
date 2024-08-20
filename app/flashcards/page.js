@@ -6,6 +6,7 @@ import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore"
 import { db } from "../../firebase"
 import { SignedOut, useUser } from "@clerk/nextjs";
 import Header from "@/components/header"
+import Link from "next/link"
 
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser()
@@ -14,7 +15,8 @@ export default function Flashcard() {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleCardClick = (id) => {
-    router.push(`/flashcard?id=${id}`)
+    console.log('id: ', id)
+    router.push(`/flashcards/id=${id}`)
   }
 
   useEffect(() => {
@@ -47,7 +49,7 @@ export default function Flashcard() {
   return (
     <>
       <Header/>
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={{minHeight: '100vh', paddingTop: {xs: '50px', md: '60px'}, }}>
       {/* Page Title and Subtitle */}
       <Box sx={{textAlign: 'center', my: 4}}>
         <Typography variant="h2" component="h1" gutterBottom>
@@ -77,7 +79,7 @@ export default function Flashcard() {
                 Loading...
               </Box>
             ) : (
-              <Box>You have no flashcard sets.</Box>
+              <Box>You have no flashcards.</Box>
             ) 
         ) : (
           <Typography variant="body1" gutterBottom>
@@ -89,13 +91,15 @@ export default function Flashcard() {
         {flashcardSets.map((set, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
             <Card>
-              <CardActionArea onClick={() => handleCardClick(set.name)}>
-                <CardContent>
-                  <Typography variant="h5" component="div">
-                    {set.name}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
+              <Link href={`/flashcards/view?setId=${set.name}`}>
+                <CardActionArea>
+                  <CardContent>
+                    <Typography variant="h5" component="div">
+                      {set.name}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Link>
             </Card>
           </Grid>
         ))}

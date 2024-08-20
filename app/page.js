@@ -36,7 +36,7 @@ export default function Home() {
   return (
     <>
       <Header title="Flashcard SaaS" />
-    <Container  maxWidth="xl">
+    <Container  maxWidth="xl" sx={{minHeight: '100vh', paddingTop: {xs: '50px', md: '60px'}, }}>
 
 
 

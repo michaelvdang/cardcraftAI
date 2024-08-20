@@ -130,7 +130,7 @@ export default function Generate() {
   return (
     <>
     <Header title={"Generate Flashcards"}/>
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={{minHeight: '100vh', paddingTop: {xs: '50px', md: '60px'}, }}>
       {/* Page Title and Subtitle */}
       <Box sx={{textAlign: 'center', my: 4}}>
         <Typography variant="h2" component="h1" gutterBottom>
