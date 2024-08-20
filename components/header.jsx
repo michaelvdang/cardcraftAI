@@ -73,7 +73,7 @@ const Header = () => {
               }}
               onClick={() => router.push('/generate')}
             >
-              Generate
+              Create
             </Button>
             <Button
               variant="contained"
@@ -149,7 +149,7 @@ const Header = () => {
             <ListItemText primary="Home" />
           </ListItem>
           <ListItem sx={{":hover": {backgroundColor: '#555555'}}} onClick={handleDrawerClose} component="a" href="/generate">
-            <ListItemText primary="Generate" />
+            <ListItemText primary="Create" />
           </ListItem>
           <ListItem sx={{":hover": {backgroundColor: '#555555'}}} onClick={handleDrawerClose} component="a" href="/flashcards">
             <ListItemText primary="Flashcards" />

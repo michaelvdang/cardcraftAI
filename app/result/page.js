@@ -64,7 +64,7 @@ export default function ResultPage() {
 
   return (
     <>
-    <Container maxWidth="xl" sx={{textAlign: 'center', mt: 4, height:"100vh"}}>
+    <Container maxWidth="xl" sx={{textAlign: 'center', mt: 4, height:"100vh", paddingTop: {xs: '50px', md: '60px'},}}>
       {/* Page Title and Subtitle */}
       <Box sx={{textAlign: 'center', my: 4}}>
         <Typography variant="h2" component="h1" gutterBottom>
