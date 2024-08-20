@@ -1,6 +1,7 @@
 
 
 TODOs:
+- Restyle /generate page
 - Add animation or hover effect to drawer menu 
 - Review code for appbar, burger menu, drawer
 - add stripe customerId to firestore 

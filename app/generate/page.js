@@ -119,6 +119,7 @@ export default function Generate() {
     }
   
     try {
+      console.log("text: ", text)
       const response = await fetch('/api/generate', {
         method: 'POST',
         body: text,
@@ -221,8 +222,8 @@ export default function Generate() {
       )}
 
       {flashcards.length > 0 && (
-        <Box sx={{ mt: 4 }}>
-          <Typography variant="h5" component="h2" gutterBottom>
+        <Box sx={{ mt: -50 }}>
+          <Typography textAlign={'center'} variant="h3" component="h2" gutterBottom>
             Generated Flashcards
           </Typography>
           <Grid container spacing={2}>
@@ -247,8 +248,8 @@ export default function Generate() {
           <Box>Saved</Box>
         </Box>
         ) : (
-        <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-          <Button variant="contained" color="primary" onClick={handleOpenDialog}>
+        <Box sx={{ m: 8, display: 'flex', justifyContent: 'center' }}>
+          <Button sx={{backgroundColor: 'black', color: 'white', marginRight: 2, border: '2px solid black', ":hover": {backgroundColor: 'white', color: 'black'} }} variant="contained" color="primary" onClick={handleOpenDialog}>
             Save Flashcards
           </Button>
         </Box>
@@ -271,8 +272,8 @@ export default function Generate() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog}>Cancel</Button>
-          <Button onClick={saveFlashcards} color="primary">
+          <Button sx={{ color: 'black'}} onClick={handleCloseDialog}>Cancel</Button>
+          <Button sx={{ color: 'black'}} onClick={saveFlashcards} color="primary">
             Save
           </Button>
         </DialogActions>
