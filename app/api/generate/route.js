@@ -16,7 +16,9 @@ You should return in the following JSON format:
 `
 
 export async function POST(req) {
-  const openai = new OpenAI()
+  const openai = new OpenAI(
+    // process.env.OPENAI_API_KEY,
+  )
   const data = await req.text()
 
   try {
