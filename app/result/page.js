@@ -64,8 +64,14 @@ export default function ResultPage() {
 
   return (
     <>
-    <Container maxWidth="xl" sx={{textAlign: 'center', mt: 4, height:"100vh"}}>
       <Header title={"Payment Result"} />
+    <Container maxWidth="xl" sx={{textAlign: 'center', mt: 4, height:"100vh"}}>
+      {/* Page Title and Subtitle */}
+      <Box sx={{textAlign: 'center', my: 4}}>
+        <Typography variant="h2" component="h1" gutterBottom>
+          Purchase Result
+        </Typography>
+      </Box>
 
       {/* Session Result */}
       {session.payment_status === 'paid' ? (

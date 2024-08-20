@@ -2,12 +2,12 @@
 import React from 'react'
 import { Box, Typography, Button, useTheme, useMediaQuery, AppBar, Toolbar, List, ListItem, ListItemText, Drawer, IconButton,  } from '@mui/material'
 import { usePathname, useRouter } from 'next/navigation'
-import { SignedIn, SignedOut, UserButton, SignInButton, SignInWithMetamaskButton, useUser, useAuth, SignOutButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton, SignInButton, SignInWithMetamaskButton, useUser, useAuth, SignOutButton, useClerk } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
 import MenuIcon from '@mui/icons-material/Menu';
 
 
-const Header = ({title}) => {
+const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleDrawerOpen = () => {
@@ -17,6 +17,13 @@ const Header = ({title}) => {
   const handleDrawerClose = () => {
     setDrawerOpen(false);
   };
+
+  const handleLogout = () => {
+    signOut({ redirectUrl: '/' })
+    setDrawerOpen(false);
+  }
+
+  const { signOut } = useClerk();
   
   const path = usePathname()
   console.log('Header path: ', path)
@@ -24,6 +31,7 @@ const Header = ({title}) => {
   const router = useRouter()
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+  
   return (
     <>
 
@@ -46,9 +54,6 @@ const Header = ({title}) => {
               height: '100%',
               alignItems: 'center',
               justifyContent: 'center',
-              width: 'auto',
-              mt: 0,
-              mb: 0,
               width: '100%'
             }}
           >
@@ -84,12 +89,14 @@ const Header = ({title}) => {
             </Button>
             <Box sx={{ flexGrow: 1 }} />
             {/* </Box> */}
-            <SignedOut>
-              {/* <SignInButton />
-              <SignInWithMetamaskButton /> */}
-              <Button sx={{backgroundColor: 'white', color: 'black', marginRight: 2, border: '2px solid white', ":hover": {backgroundColor: 'black', color: 'white'} }} color="inherit" href="/sign-in">Login</Button>
-              <Button sx={{ border: '2px solid white', ":hover": {backgroundColor: '#777777'}, marginRight: 2}}  color="inherit" href="/sign-up">Sign Up</Button>
-            </SignedOut>
+            { path !== '/sign-in' && 
+              <SignedOut>
+                {/* <SignInButton />
+                <SignInWithMetamaskButton /> */}
+                {/* <Button sx={{backgroundColor: 'white', color: 'black', marginRight: 2, border: '2px solid white', ":hover": {backgroundColor: 'black',  color: 'white'} }} color="inherit" href="/sign-in">Login</Button> */}
+                <Button sx={{ border: '2px solid white', ":hover": {backgroundColor: '#333333'}, marginRight: 2}}  color="inherit" href={`/sign-in?redirectTo=${(path)}`}>Login</Button>
+              </SignedOut>
+            }
             <SignedIn>
               <UserButton />
             </SignedIn>
@@ -129,26 +136,33 @@ const Header = ({title}) => {
         }}
       >
         <List>
-          <ListItem button onClick={handleDrawerClose} component="a" href="/">
+          {/* <SignedIn>
+            <ListItem onClick={handleDrawerClose}>
+              <ListItemText primary="User" />
+            </ListItem>
+          </SignedIn> */}
+          <ListItem onClick={handleDrawerClose} component="a" href="/">
             <ListItemText primary="Home" />
           </ListItem>
-          <ListItem button onClick={handleDrawerClose} component="a" href="/generate">
+          <ListItem onClick={handleDrawerClose} component="a" href="/generate">
             <ListItemText primary="Generate" />
           </ListItem>
-          <ListItem button onClick={handleDrawerClose} component="a" href="/flashcards">
+          <ListItem onClick={handleDrawerClose} component="a" href="/flashcards">
             <ListItemText primary="Flashcards" />
           </ListItem>
           <SignedOut>
-
-          <ListItem button onClick={handleDrawerClose} component="a" href="/sign-in">
-            <ListItemText primary="Login" />
-          </ListItem>
-          <ListItem button onClick={handleDrawerClose} component="a" href="/sign-up">
-            <ListItemText primary="Sign Up" />
-          </ListItem>
+            <ListItem onClick={handleDrawerClose} component="a" href="/sign-in">
+              <ListItemText primary="Login/Register" />
+            </ListItem>
+            {/* <ListItem onClick={handleDrawerClose} component="a" href="/sign-up">
+              <ListItemText primary="Sign Up" />
+            </ListItem> */}
           </SignedOut>
           <SignedIn>
-            <SignOutButton />
+            <ListItem onClick={handleLogout} component="a" href="#">
+              <ListItemText primary="Log Out" />
+            </ListItem>
+            {/* <SignOutButton /> */}
             {/* <ListItem button onClick={handleDrawerClose}>
               <ListItemText primary="User" />
             </ListItem> */}

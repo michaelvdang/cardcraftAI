@@ -1,19 +1,19 @@
+'use client'
 import React from 'react'
 import { Container, Box, Typography, AppBar, Toolbar, Button } from '@mui/material'
 import { SignIn } from '@clerk/nextjs'
 import Link from 'next/link'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import Header from '@/components/header'
 
-export default function SignUpPage() {
+export default function SignInPage() {
+
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get('redirectTo')
+  
   return (
     <>
-    <AppBar position="static" sx={{backgroundColor: 'black'}}>
-      <Toolbar>
-        <Typography variant="h6" sx={{flexGrow: 1}}>
-          Flashcard SaaS
-        </Typography>
-        <Button sx={{ border: '2px solid white', ":hover": {backgroundColor: '#777777'}, marginRight: 2}}  color="inherit" href="/sign-up">Sign Up</Button>
-      </Toolbar>
-    </AppBar>
+    <Header />
     <Box
       display="flex"
       flexDirection="column"
@@ -21,10 +21,13 @@ export default function SignUpPage() {
       alignItems="center"
       sx={{textAlign: 'center', my: 4}}
     >
-      <Typography variant="h4" component="h1" gutterBottom>
-        Sign In
-      </Typography>
-      <SignIn />
+      {/* Page Title and Subtitle */}
+      <Box sx={{textAlign: 'center', my: 4}}>
+        <Typography variant="h2" component="h1" gutterBottom>
+          Sign In
+        </Typography>
+      </Box>
+      <SignIn fallbackRedirectUrl={redirectTo} />
     </Box>
     </>
   )

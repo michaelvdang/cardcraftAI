@@ -44,11 +44,16 @@ export default function Flashcard() {
     getFlashcards()
   }, [user])
 
-
   return (
+    <>
+      <Header/>
     <Container maxWidth="xl">
-      <Header title={"Flashcard Sets"}/>
-        
+      {/* Page Title and Subtitle */}
+      <Box sx={{textAlign: 'center', my: 4}}>
+        <Typography variant="h2" component="h1" gutterBottom>
+          Flashcards
+        </Typography>
+      </Box>
       {!user ? (
         <Box
           sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: -20 }}
@@ -96,6 +101,8 @@ export default function Flashcard() {
         ))}
       </Grid>
 
-    </Container>
+      </Container>
+    
+    </>
   )
 }

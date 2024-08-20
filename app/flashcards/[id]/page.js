@@ -17,7 +17,7 @@ export default function Flashcard() {
   const [isFlipped, setIsFlipped] = useState(false)
 
   const router = useRouter()
-  const params = useParams();
+  const params = useParams(); // read path params
   const setId = params.id
 
   useEffect(() => {
