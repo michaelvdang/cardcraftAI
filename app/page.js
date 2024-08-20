@@ -36,8 +36,6 @@ export default function Home() {
   
   return (
     <>
-    <Container  maxWidth="xl" sx={{minHeight: '100vh', }}>
-      {/* Hero */}
       <Box sx={{
         textAlign: 'center', 
         my: 4,
@@ -63,6 +61,8 @@ export default function Home() {
           View Flashcards
         </Button> */}
       </Box>
+    <Container  maxWidth="xl" sx={{minHeight: '100vh', }}>
+      {/* Hero */}
         <Box id="features" height="30px"/>
 
       {/* CTA */}
