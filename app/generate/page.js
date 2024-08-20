@@ -24,6 +24,7 @@ import { auth } from '../../firebase'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/header'
 import { SignedOut } from '@clerk/nextjs'
+import RequireLogin from '@/components/requireLogin'
 
 export default function Generate() {
   const { user } = useUser()
@@ -155,18 +156,7 @@ export default function Generate() {
         </Box>
         ) : (
         !user ? (
-          <Box
-            sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: -20 }}
-          >
-            <Box>
-              You must be logged in to view flashcards.
-            </Box>
-            <Box mt={2}>
-              <SignedOut>
-                <Button sx={{backgroundColor: 'black', color: 'white', marginRight: 2, border: '2px solid black', ":hover": {backgroundColor: 'white', color: 'black'} }} color="inherit" href="/sign-in">Login</Button>
-              </SignedOut>
-            </Box>
-          </Box>
+          <RequireLogin />
         ) : (
           <Box 
             sx={{ height: '100vh', width: '80%', margin: 'auto' }}

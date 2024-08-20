@@ -9,6 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Header from "@/components/header"
 import { SignedOut } from "@clerk/nextjs"
 import { db } from "../../../firebase"
+import RequireLogin from "@/components/requireLogin"
 
 
 export default function Flashcard() {
@@ -115,18 +116,7 @@ export default function Flashcard() {
         </Box>
         ) : (
           !user ? (
-            <Box
-              sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: -20 }}
-            >
-              <Box>
-                You must be logged in to view flashcards.
-              </Box>
-              <Box mt={2}>
-                <SignedOut>
-                  <Button sx={{backgroundColor: 'black', color: 'white', marginRight: 2, border: '2px solid black', ":hover": {backgroundColor: 'white', color: 'black'} }} color="inherit" href="/sign-in">Login</Button>
-                </SignedOut>
-              </Box>
-            </Box>
+            <RequireLogin />
           ) : (
           <Grid container spacing={3} sx={{ mt: 4, mb: 4 }}>
             {flashcards.map((flashcard, index) => (

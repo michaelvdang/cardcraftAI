@@ -7,6 +7,7 @@ import { db } from "../../firebase"
 import { SignedOut, useUser } from "@clerk/nextjs";
 import Header from "@/components/header"
 import Link from "next/link"
+import RequireLogin from "@/components/requireLogin"
 
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser()
@@ -71,18 +72,7 @@ export default function Flashcard() {
         </Box>
         ) : (
         !user ? (
-          <Box
-            sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: -20 }}
-          >
-            <Box>
-              You must be logged in to view flashcard sets.
-            </Box>
-            <Box mt={2}>
-              <SignedOut>
-                <Button sx={{backgroundColor: 'black', color: 'white', marginRight: 2, border: '2px solid black', ":hover": {backgroundColor: 'white', color: 'black'} }} color="inherit" href="/sign-in">Login</Button>
-              </SignedOut>
-            </Box>
-          </Box>
+          <RequireLogin />
         ) : (
           (flashcardSets.length === 0) && (
             isLoading ? (
