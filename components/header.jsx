@@ -55,9 +55,10 @@ const Header = () => {
     <>
 
     {/* App Bar */}
-    <AppBar position="fixed" color="transparent" sx={{backgroundColor: '#000000bb', height: {xs: '50px', md: '60px'}, display: 'flex', justifyContent: 'center', alignItems: 'center', backdropFilter: 'blur(25px)'}}>
+    {/* backgroundColor: ffffff22 */}
+    <AppBar position="fixed" className='appbar-custom'>
       <Toolbar sx={{maxWidth: '1600px', width: '100%'}}>
-          <Typography color={'white'} sx={{width: {xs: '150px', md: '240px'}, textAlign: 'center'}} variant="h6" marginRight={2} fontSize={{xs: '1.2rem', md: '1.5rem'}}>
+          <Typography color={'white'} className='header-title'>
             CardCraft AI
           </Typography>
 

@@ -10,6 +10,8 @@ export default function SignInPage() {
 
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirectTo')
+
+  console.log('redirectTo: ', redirectTo)
   
   return (
     <>

@@ -1,8 +1,13 @@
+'use client'
 import React from 'react'
 import { AppBar, Box, Grid, Toolbar, Typography } from '@mui/material'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation';
 
 const Footer = () => {
+  const path = usePathname();
+
+  // if (path === '/generate') return null;
   return (
   <Box
     // height={{xs: '50px', md: '200px'}}

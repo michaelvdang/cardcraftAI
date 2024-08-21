@@ -116,13 +116,13 @@ a {
 .cta-button {
   color: white;
   background-color: black;
-  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.8);
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .cta-button:hover {
   background-color: #ffffff;
   color: black;
-  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.8);
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.4);
 }
 /* .cta-button {
   color: black;
@@ -161,8 +161,8 @@ a {
 /* Styles for dark mode */
 @media (prefers-color-scheme: dark) {
   .cta-button {
-    color: white;
-    background-color: black;
+    color: black;
+    background-color: white;
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.8);
   }
 
@@ -210,5 +210,192 @@ a {
 @media (min-width: 1200px) { /* Adjust the min-width as needed */
   .card-highlight {
     transform: scale(1.1);
+  }
+}
+
+/* App bar  */
+.appbar-custom {
+  background-color: #ffffff55;
+  height: 50px; /* Default height for small screens */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(25px);
+}
+
+/* Medium and up screen size */
+@media (min-width: 960px) {
+  .appbar-custom {
+    height: 60px;
+  }
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+  .appbar-custom {
+    background-color: #ffffff22; /* Dark mode background color */
+  }
+}
+
+.header-title {
+  color: white;
+  width: 150px;
+  text-align: center;
+  font-size: 1.2rem;
+  margin-right: 16px; /* Equivalent to marginRight={2} in MUI */
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9); /* Add text shadow */
+}
+
+/* Medium and up screen size */
+@media (min-width: 960px) {
+  .header-title {
+    width: 240px;
+    font-size: 1.5rem;
+  }
+}
+
+.input-container {
+  /* style the container helper text container */
+  background-color: #eee;
+  border-radius: 5px;
+}
+
+.input-container .MuiFormHelperText-root  {
+
+  color: black;
+} 
+
+.input-container .MuiOutlinedInput-root {
+  /* Set background color for the input */
+  background-color: white; 
+}
+
+.input-container .MuiOutlinedInput-root fieldset {
+  border-color: gray; /* Default border color */
+}
+
+.input-container .MuiOutlinedInput-root:hover fieldset {
+  border-color: black; /* Border color on hover */
+}
+
+.input-container .MuiOutlinedInput-root.Mui-focused fieldset {
+  border-color: black; /* Border color when focused */
+}
+
+.input-container .MuiOutlinedInput-input {
+  resize: vertical; /* Allow resizing in both directions */
+  overflow: auto; /* To manage overflow when resizing */
+}
+
+.input-container .MuiInputBase-input::placeholder {
+  color: gray; /* Default placeholder color */
+}
+
+.input-container .MuiInputBase-input:focus::placeholder {
+  color: black; /* Placeholder color when focused */
+}
+
+.input-container .MuiInputLabel-root.Mui-focused {
+  color: black; /* Label color when focused */
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+  .input-container {
+    background-color: #333; /* Dark mode background for container */
+  }
+
+  .input-container .MuiFormHelperText-root  {
+    color: white;
+  }
+
+  .input-container .MuiOutlinedInput-root {
+    background-color: #222; /* Dark mode background for the input */
+    color: white;
+  }
+
+  .input-container .MuiOutlinedInput-root fieldset {
+    border-color: #666; /* Default border color in dark mode */
+  }
+
+  .input-container .MuiOutlinedInput-root:hover fieldset {
+    border-color: #bbb; /* Border color on hover in dark mode */
+  }
+
+  .input-container .MuiOutlinedInput-root.Mui-focused fieldset {
+    border-color: #fff; /* Border color when focused in dark mode */
+  }
+
+  .input-container .MuiInputBase-input::placeholder {
+    color: #ffffff; /* Placeholder color in dark mode */
+  }
+
+  .input-container .MuiInputBase-input:focus::placeholder {
+    color: white; /* Placeholder color when focused in dark mode */
+  }
+
+  .input-container .MuiInputLabel-root {
+    color: white; /* Label color in dark mode */
+  }
+
+  .input-container .MuiInputLabel-root.Mui-focused {
+    color: white; /* Label color when focused in dark mode */
+  }
+}
+
+/* flashcard sets style  */
+.flashcard-set {
+  background-color: #fff;
+  box-shadow: 0 1px 8px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .flashcard-set {
+    background-color: #222;
+    color: white;
+  }
+}
+
+/* flashcard card style  */
+.flashcard-card {
+  box-shadow: 0 1px 8px 1px rgba(0, 0, 0, 0.3);
+  border: 1px solid #ddd;
+}
+
+@media (prefers-color-scheme: dark) {
+  .flashcard-card {
+    background-color: #222;
+    color: white;
+  }
+}
+
+/* flashcard front and back style  */
+.flashcard-front {
+  background-color: #fcfcfc;
+  border-radius: 5px;
+  padding: 16px;
+  /* box-shadow: 0 1px 8px 1px rgba(0, 0, 0, 0.1); */
+}
+
+@media (prefers-color-scheme: dark) {
+  .flashcard-front {
+    background-color: #222;
+    color: white;
+  }
+}
+
+.flashcard-back {
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 16px;
+  /* border: 1px solid #f1f1f1; */
+  box-shadow: 0 1px 8px 1px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  .flashcard-back {
+    background-color: #383838;
+    color: white;
   }
 }

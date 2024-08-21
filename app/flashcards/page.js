@@ -77,7 +77,7 @@ export default function Flashcard() {
           (flashcardSets.length === 0) && (
             isLoading ? (
                 <Box
-                  sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: -20 }}
+                  sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: -40 }}
                 >
                   Loading...
                 </Box>
@@ -90,7 +90,7 @@ export default function Flashcard() {
       <Grid container spacing={3} sx={{ mt: 4 }}>
         {flashcardSets.map((set, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card>
+            <Card className="flashcard-set" variant="outlined">
               <Link href={`/flashcards/view?setId=${set.name}`}>
                 <CardActionArea>
                   <CardContent>
