@@ -93,14 +93,14 @@ export default function Home() {
                 size='large'
                 variant="contained"
                 className='cta-button'
-                sx={{ mt: { xs: 2, md: 4}, display: 'flex', justifyContent: 'center' }}
+                href='/sign-in'
                 // sx={{
                   //   ":hover": { backgroundColor: '#000000', color: 'white' },
                   //   color: 'black',
                   //   backgroundColor: 'white',
                   //   border: '2px solid black',
                   // }}
-                  onClick={() => router.push('/sign-in')}
+                // onClick={() => router.push('/sign-in')}
               >
                 Log in
               </Button>

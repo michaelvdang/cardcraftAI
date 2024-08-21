@@ -19,24 +19,22 @@ const RequireLogin = () => {
       }}
     >
       <Box>You must be logged in to view flashcards.</Box>
-      <Box mt={2}>
-        <SignedOut>
-          <Button
-            variant="contained"
-            className="cta-button"
-            // sx={{
-            //   backgroundColor: "black",
-            //   color: "white",
-            //   marginRight: 2,
-            //   border: "2px solid black",
-            //   ":hover": { backgroundColor: "white", color: "black" },
-            // }}
-            color="inherit"
-            href={`/sign-in?redirectTo=${(path) || '/'}`}
-          >
-            Login
-          </Button>
-        </SignedOut>
+      <Box mt={2} className="cta-container">
+        <Button
+          variant="contained"
+          className="cta-button"
+          // sx={{
+          //   backgroundColor: "black",
+          //   color: "white",
+          //   marginRight: 2,
+          //   border: "2px solid black",
+          //   ":hover": { backgroundColor: "white", color: "black" },
+          // }}
+          color="inherit"
+          href={`/sign-in?redirectTo=${(path) || '/'}`}
+        >
+          Login
+        </Button>
       </Box>
     </Box>
   );

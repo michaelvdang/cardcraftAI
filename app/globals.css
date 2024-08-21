@@ -112,17 +112,20 @@ a {
   }
 }
 
-/* Default styles for light mode */
-.cta-container.cta-button {
-  color: white !important;
-  background-color: black !important;
+.cta-container {
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.4);
 }
 
-.cta-container.cta-button:hover {
-  color: black !important;
-  background-color: white !important;
-  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.4);
+/* Default styles for light mode */
+.cta-container .cta-button {
+  color: white;
+  background-color: black;
+}
+
+.cta-container .cta-button:hover {
+  color: black;
+  background-color: white;
+  box-shadow:inset 0px 0px 0px 1px black;
 }
 /* .cta-button {
   color: black;
@@ -160,16 +163,19 @@ a {
 
 /* Styles for dark mode */
 @media (prefers-color-scheme: dark) {
+  .cta-container {
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.4);
+  }
+
   .cta-container .cta-button {
     color: black;
     background-color: white;
-    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.8);
   }
 
   .cta-container .cta-button:hover {
     color: white;
     background-color: black;
-    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.8);
+    box-shadow:inset 0px 0px 0px 1px white;
   }
 
   .primary-button {
@@ -227,7 +233,7 @@ a {
   }
 }
 
-.header-title {
+.appbar-custom .header-title {
   color: white;
   width: 150px;
   text-align: center;
