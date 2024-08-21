@@ -56,9 +56,12 @@ const Header = () => {
 
     {/* App Bar */}
     {/* backgroundColor: ffffff22 */}
-    <AppBar position="fixed" className='appbar-custom'>
+    <AppBar 
+      position="fixed" 
+      className='appbar-custom'
+    >
       <Toolbar sx={{maxWidth: '1600px', width: '100%'}}>
-          <Typography color={'white'} className='header-title'>
+          <Typography color={'white'} className='header-title' sx={{ marginX: -1 }}>
             CardCraft AI
           </Typography>
 
@@ -158,7 +161,7 @@ const Header = () => {
           backgroundColor: '#000000bb',
           color: 'white',
           backdropFilter: 'blur(5px)',
-          WebkitBackdropFilter: 'blur(5px)', // Ensure compatibility with WebKit browsers
+          // WebkitBackdropFilter: 'blur(5px)', // Ensure compatibility with WebKit browsers
         }}
       >
         <List>

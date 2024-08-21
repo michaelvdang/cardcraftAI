@@ -215,12 +215,12 @@ a {
 
 /* App bar  */
 .appbar-custom {
-  background-color: #ffffff55;
+  background-color: #ffffff55 !important;
   height: 50px; /* Default height for small screens */
   display: flex;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(25px);
+  backdrop-filter: blur(25px) !important;
 }
 
 /* Medium and up screen size */
@@ -233,7 +233,7 @@ a {
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   .appbar-custom {
-    background-color: #ffffff22; /* Dark mode background color */
+    background-color: #ffffff22 !important; /* Dark mode background color */
   }
 }
 
