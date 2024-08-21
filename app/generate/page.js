@@ -132,8 +132,7 @@ export default function Generate() {
     })
     await deleteDoc(setDocRef)
     
-
-    
+    // using batch to delete document from flashcards collection does not work for some reason
     const batch = writeBatch(db)
     
     console.log('batch added: deleted document from flashcards collection')
@@ -145,7 +144,7 @@ export default function Generate() {
 
     addCardsToSet(batch)
 
-    alert('Flashcards Overwritten successfully!')
+    // alert('Flashcards Overwritten successfully!')
     // router.push('/flashcards/view?setId=' + setName)
   }
 
@@ -157,7 +156,7 @@ export default function Generate() {
 
     addCardsToSet(batch)    
 
-    alert('Flashcards appended successfully!')
+    // alert('Flashcards appended successfully!')
     // router.push('/flashcards/view?setId=' + setName)
   }
 
@@ -174,6 +173,7 @@ export default function Generate() {
     // setIsSaved(true)
     handleCloseSaveDialog()
     setSetName('')
+    router.push('/flashcards/view?setId=' + setName)
   }
   
   const handleSubmit = async () => {
