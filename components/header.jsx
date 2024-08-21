@@ -8,6 +8,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { Opacity } from '@mui/icons-material';
 import Link from 'next/link';
+// import globals styles
+import '../app/globals.css'
 
 const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
