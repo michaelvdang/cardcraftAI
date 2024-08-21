@@ -114,14 +114,14 @@ a {
 
 /* Default styles for light mode */
 .cta-button {
-  color: white;
-  background-color: black;
+  color: white !important;
+  background-color: black !important;
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .cta-button:hover {
-  background-color: #ffffff;
-  color: black;
+  color: black !important;
+  background-color: white !important;
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.4);
 }
 /* .cta-button {
@@ -167,20 +167,10 @@ a {
   }
 
   .cta-button:hover {
-    background-color: #ffffff !important;
-    color: black !important;
+    color: white !important;
+    background-color: black !important;
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.8);
   }
-
-  /* .primary-button {
-    color: white;
-    background-color: black;
-  }
-  
-  .primary-button:hover {
-    background-color: #ffffff;
-    color: black;
-  } */
 
   .primary-button {
     color: black;

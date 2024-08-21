@@ -89,7 +89,8 @@ const PricingTable = () => {
                 <Button 
                   variant="contained" 
                   color="primary" 
-                  className='primary-button'
+                  className='cta-button'
+                  // className='primary-button'
                   // sx={{
                   //   justifySelf: 'center', 
                   //   backgroundColor: 'black' , 
@@ -124,7 +125,8 @@ const PricingTable = () => {
               >
                 <Button variant="contained" 
                   // sx={{justifySelf: 'center', backgroundColor: 'black', ":hover": {backgroundColor: '#c2c2c2'}}}
-                  className='primary-button'
+                  className='cta-button'
+                  // className='primary-button'
                 >
                   Contact Sales
                 </Button>

@@ -63,7 +63,10 @@ const Header = () => {
       className='appbar-custom'
     >
       <Toolbar sx={{maxWidth: '1600px', width: '100%'}}>
-          <Typography color={'white'} className='header-title' sx={{ marginX: -1 }}>
+          {/* Logo here */}
+
+          {/* App title here */}
+          <Typography color={'white'} className='header-title' sx={{ marginX: 0 }}>
             CardCraft AI
           </Typography>
 
