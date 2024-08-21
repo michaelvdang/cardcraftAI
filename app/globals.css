@@ -161,14 +161,14 @@ a {
 /* Styles for dark mode */
 @media (prefers-color-scheme: dark) {
   .cta-button {
-    color: black;
-    background-color: white;
+    color: black !important;
+    background-color: white !important;
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.8);
   }
 
   .cta-button:hover {
-    background-color: #ffffff;
-    color: black;
+    background-color: #ffffff !important;
+    color: black !important;
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.8);
   }
 
@@ -215,12 +215,12 @@ a {
 
 /* App bar  */
 .appbar-custom {
-  background-color: #ffffff55;
+  background-color: #ffffff55 !important;
   height: 50px; /* Default height for small screens */
   display: flex;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(25px);
+  backdrop-filter: blur(25px) !important;
 }
 
 /* Medium and up screen size */
@@ -233,7 +233,7 @@ a {
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   .appbar-custom {
-    background-color: #ffffff22; /* Dark mode background color */
+    background-color: #ffffff22 !important; /* Dark mode background color */
   }
 }
 
