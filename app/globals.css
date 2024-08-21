@@ -183,13 +183,13 @@ a {
   } */
 
   .primary-button {
-    color: black !important;
-    background-color: white !important;
+    color: black;
+    background-color: white;
   }
 
   .primary-button:hover {
-    background-color: #222222 !important;
-    color: white !important;
+    background-color: #222222;
+    color: white;
   }
 
   .pricing-card {
@@ -215,12 +215,12 @@ a {
 
 /* App bar  */
 .appbar-custom {
-  background-color: #ffffff55 !important;
+  background-color: #ffffff55;
   height: 50px; /* Default height for small screens */
   display: flex;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(25px) !important;
+  backdrop-filter: blur(25px);
 }
 
 /* Medium and up screen size */
@@ -233,7 +233,7 @@ a {
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   .appbar-custom {
-    background-color: #ffffff22 !important; /* Dark mode background color */
+    background-color: #ffffff22; /* Dark mode background color */
   }
 }
 

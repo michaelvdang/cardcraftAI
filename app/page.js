@@ -78,25 +78,25 @@ export default function Home() {
           <Box sx={{ mt: { xs: 2, md: 4}, display: 'flex', justifyContent: 'center' }}>
             {user ? (
               <Button 
-                className='cta-button'
                 size='large'
                 variant="contained"
                 href='/generate'
+                className='cta-button'
               >
                 Create
               </Button>
             ) : (
               <Button
-                className='cta-button'
                 size='large'
                 variant="contained"
+                className='cta-button'
                 // sx={{
-                //   ":hover": { backgroundColor: '#000000', color: 'white' },
-                //   color: 'black',
-                //   backgroundColor: 'white',
-                //   border: '2px solid black',
-                // }}
-                onClick={() => router.push('/sign-in')}
+                  //   ":hover": { backgroundColor: '#000000', color: 'white' },
+                  //   color: 'black',
+                  //   backgroundColor: 'white',
+                  //   border: '2px solid black',
+                  // }}
+                  onClick={() => router.push('/sign-in')}
               >
                 Log in
               </Button>

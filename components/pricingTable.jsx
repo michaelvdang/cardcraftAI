@@ -87,9 +87,9 @@ const PricingTable = () => {
                 sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', m: 2 }}
               >
                 <Button 
-                  className='primary-button'
                   variant="contained" 
                   color="primary" 
+                  className='primary-button'
                   // sx={{
                   //   justifySelf: 'center', 
                   //   backgroundColor: 'black' , 
