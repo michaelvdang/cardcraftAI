@@ -30,10 +30,10 @@ const Footer = () => {
             Quick Links
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <Link href="#features" color="inherit" underline="hover">
+            <Link href="/#features" color="inherit" underline="hover">
               Features
             </Link>
-            <Link href="#pricing" color="inherit" underline="hover">
+            <Link href="/#pricing" color="inherit" underline="hover">
               Pricing
             </Link>
             {/* <Link href="#" color="inherit" underline="hover">

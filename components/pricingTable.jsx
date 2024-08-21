@@ -84,6 +84,7 @@ const PricingTable = () => {
                 $9.99 / month
               </Typography>
               <Box
+                className="cta-container"
                 sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', m: 2 }}
               >
                 <Button 
@@ -121,6 +122,7 @@ const PricingTable = () => {
                 Custom Pricing
               </Typography>
               <Box
+                className="cta-container"
                 sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', m: 2 }}
               >
                 <Button variant="contained" 

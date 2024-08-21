@@ -113,13 +113,13 @@ a {
 }
 
 /* Default styles for light mode */
-.cta-button {
+.cta-container.cta-button {
   color: white !important;
   background-color: black !important;
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.4);
 }
 
-.cta-button:hover {
+.cta-container.cta-button:hover {
   color: black !important;
   background-color: white !important;
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.4);
@@ -160,15 +160,15 @@ a {
 
 /* Styles for dark mode */
 @media (prefers-color-scheme: dark) {
-  .cta-button {
-    color: black !important;
-    background-color: white !important;
+  .cta-container .cta-button {
+    color: black;
+    background-color: white;
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.8);
   }
 
-  .cta-button:hover {
-    color: white !important;
-    background-color: black !important;
+  .cta-container .cta-button:hover {
+    color: white;
+    background-color: black;
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.8);
   }
 

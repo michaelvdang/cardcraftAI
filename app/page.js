@@ -75,7 +75,10 @@ export default function Home() {
             The easiest way to create flashcards from your text.
           </Typography>
           {/* CTA */}
-          <Box sx={{ mt: { xs: 2, md: 4}, display: 'flex', justifyContent: 'center' }}>
+          <Box
+            className="cta-container" 
+            sx={{ mt: { xs: 2, md: 4}, display: 'flex', justifyContent: 'center' }}
+          >
             {user ? (
               <Button 
                 size='large'
@@ -90,6 +93,7 @@ export default function Home() {
                 size='large'
                 variant="contained"
                 className='cta-button'
+                sx={{ mt: { xs: 2, md: 4}, display: 'flex', justifyContent: 'center' }}
                 // sx={{
                   //   ":hover": { backgroundColor: '#000000', color: 'white' },
                   //   color: 'black',
