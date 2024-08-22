@@ -72,6 +72,8 @@ export default function ResultPage() {
         </Typography>
       </Box>
 
+      {/* Wait for maximum 10 seconds while firestore gets updated with new subscription, don't show result until then  */}
+
       {/* Session Result */}
       {session.payment_status === 'paid' ? (
         <>

@@ -72,10 +72,11 @@ export async function POST(request) {
       const usersRef = admin.firestore().collection('users')
       
       // PROD: use customer id from event
-      // const querySnapshot = await usersRef.where('stripe_customer_id', '==', customerId).get();
-      
+      // const targetCustomerId = customerId;
       // TESTING: use customer id that's already in firestore
-      const querySnapshot = await usersRef.where('stripe_customer_id', '==', 'cus_QhtgJYqBcHzazS').get();
+      const targetCustomerId = 'cus_QhtgJYqBcHzazS'
+      
+      const querySnapshot = await usersRef.where('stripe_customer_id', '==', targetCustomerId).get();
 
       // update customer subscription type in Firestore
       if (querySnapshot.empty) {

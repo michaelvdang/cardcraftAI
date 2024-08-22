@@ -38,3 +38,9 @@ Data flow:
   - if all goes smooth, server will send event to /results to update the user object in app to new subscriptionTier
   - DONE
 
+  Dev:
+  - To run the above data flow locally, start the local webhook like above 
+  - The sent event will not have the correct customerId in firestore, to to webhook1234/route.js and change the targetCustomerId value to one that is in firestore 
+  - Watch the subscriptions field in user's firestore document get appended with new subscription
+
+

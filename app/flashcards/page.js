@@ -8,17 +8,20 @@ import { SignedOut, useUser } from "@clerk/nextjs";
 import Header from "@/components/header"
 import Link from "next/link"
 import RequireLogin from "@/components/requireLogin"
+import { useUserSubscription } from "@/utils/useUserSubscription"
 
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser()
   const [flashcardSets, setFlashcardSets] = useState([])
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
-
+  const subscriptionTier = useUserSubscription(user?.id);
+  // const [subscriptionTier, setSubscriptionTier] = useState(null)
+  console.log('flashcards page subscription tier: ', subscriptionTier)
+  
   useEffect(() => {
     if (isLoaded) {
       setIsLoading(false)
-      console.log('useEffect user: ', user)
     }
   }, [isLoaded, user])
 
