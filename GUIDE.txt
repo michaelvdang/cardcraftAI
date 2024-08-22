@@ -28,5 +28,13 @@ Data flow:
   - userId: to look up customerId in firestore to keep stripe clean 
 - Server: 
   - check if user exists in firestore, create if not 
-  - scan table 
+  - check if user has stripe_customer_id field 
+    - if yes, retrieve stripe_customer_id
+    - if no, create new stripe customer, get stripe_customer_id
+  - create checkout session like in the file, use the stripe_customer_id to pre-populate customer details in the checkout page 
+  - DONE -> user is pushed to checkout page to finish
+  - (user finishes checkout and pay) -> user is pushed to /results?session_id=<session_id>
+  - hook in /results will wait and listen for update from server 
+  - if all goes smooth, server will send event to /results to update the user object in app to new subscriptionTier
+  - DONE
 

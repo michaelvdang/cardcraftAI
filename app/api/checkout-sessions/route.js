@@ -27,26 +27,28 @@ export async function POST(req) {
     }
 
     // check if user has stripe_customer_id in firestore
-    let customer;
+    let stripe_customer_id = null;
     const user = await userRef.get();
     if (!user.data().stripe_customer_id) {
       // Create customer in Stripe and get customer id if it doesn't exist
-      customer = await stripe.customers.create({
+      const customer = await stripe.customers.create({
         email: email,
       })
+
+      stripe_customer_id = customer.id
 
       // save customer id as attribute of user in firestore
       await userRef.update({ stripe_customer_id: customer.id });
     }
     else {
       // get stripe customer id from firestore
-      const stripe_customer_id = user.data().stripe_customer_id;
-      customer = await stripe.customers.retrieve(stripe_customer_id); // what to do with this customer?
+      stripe_customer_id = user.data().stripe_customer_id;
+      // customer = await stripe.customers.retrieve(stripe_customer_id); // what to do with this customer?
     }
     
     // Create checkout session
     const params = {
-      customer: customer.id, // to pre-populate customer details
+      customer: stripe_customer_id, // to pre-populate customer details such as email
       mode: 'subscription',
       payment_method_types: ['card'],
       line_items: [
