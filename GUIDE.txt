@@ -19,6 +19,14 @@ GUIDE:
   - stripe listen --forward-to localhost:3000/webhook1234
   - stripe trigger payment_intent.succeeded
 
-
-
+OVERVIEW:
+Stripe API webhook:
+Data flow:
+- UI: Customer (logged in) creates checkout session by clicking on a purchase button, passing in priceId, email, userId 
+  - priceId: to create session purchasing this item
+  - email: to create a stripe customerId if it doesn't aleady exists in firestore 
+  - userId: to look up customerId in firestore to keep stripe clean 
+- Server: 
+  - check if user exists in firestore, create if not 
+  - scan table 
 
