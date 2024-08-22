@@ -92,7 +92,7 @@ export async function POST(request) {
           const current_period_end = customerSubscriptionUpdated.current_period_end
           const cancel_at_period_end = customerSubscriptionUpdated.cancel_at_period_end
           const subscription = {
-            eventId,
+            eventId, 
             customerId,
             productId: customerSubscriptionUpdated.items.data[0].price.product,
             subscriptionId,
