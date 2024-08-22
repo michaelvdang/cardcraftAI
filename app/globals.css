@@ -112,9 +112,6 @@ a {
   }
 }
 
-.cta-container {
-  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.4);
-}
 
 /* Default styles for light mode */
 .cta-container .cta-button {
@@ -163,9 +160,7 @@ a {
 
 /* Styles for dark mode */
 @media (prefers-color-scheme: dark) {
-  .cta-container {
-    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.4);
-  }
+
 
   .cta-container .cta-button {
     color: black;

@@ -1,21 +1,28 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box, Typography, Grid, Button } from '@mui/material'
 import { useUser } from '@clerk/nextjs'
 import { getStripe } from '@/utils/get-stripe'
 
 const PricingTable = () => {
-  const { user } = useUser()
+  const { isLoaded, isSignedIn, user } = useUser()
 
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      console.log('PricingTable primaryEmailAddress: ', user?.primaryEmailAddress.emailAddress)
+    }
+  }, [isLoaded, user])
+  
   const handlePurchasePro = async () => {
-    if (!user) {
+    if (isLoaded && !isSignedIn) {
       alert('Please sign in to purchase a plan')
       return
     }
+    console.log('Purchase Pro: ', user?.primaryEmailAddress.emailAddress)
     const pro_price_id = 'price_1PoGZcC3afAR2U7cASsbbCQc'
     const checkoutSession = await fetch('/api/checkout-sessions', {
       method: 'POST',
       headers: { origin: 'http://localhost:3000' },
-      body: JSON.stringify({ priceId: pro_price_id }),
+      body: JSON.stringify({ priceId: pro_price_id, email: user?.primaryEmailAddress.emailAddress, userId: user?.id }),
     })
     const checkoutSessionJson = await checkoutSession.json()
   

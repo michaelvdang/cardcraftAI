@@ -16,15 +16,22 @@ export default function Flashcard() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    if (user) {
+    if (isLoaded) {
       setIsLoading(false)
+      console.log('useEffect user: ', user)
     }
-    else {
-      setTimeout(() => {
-        setIsLoading(false)
-      }, 3000);
-    }
-  }, [user])
+  }, [isLoaded, user])
+
+  // useEffect(() => {
+  //   if (user) {
+  //     setIsLoading(false)
+  //   }
+  //   else {
+  //     setTimeout(() => {
+  //       setIsLoading(false)
+  //     }, 3000);
+  //   }
+  // }, [user])
   
   useEffect(() => {
     async function getFlashcards() {

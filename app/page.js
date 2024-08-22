@@ -1,21 +1,14 @@
 'use client'
-import Image from 'next/image';
 import { AppBar, Toolbar, Typography, Button, Box, Grid, useTheme, useMediaQuery, IconButton, Drawer, List, ListItem, ListItemText, Container } from "@mui/material";
-import { SignedIn, SignedOut, UserButton, SignInButton, SignInWithMetamaskButton, useUser, useAuth } from "@clerk/nextjs";
+import { useUser, useAuth } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
 import { signInWithCustomToken } from "firebase/auth";
 import { auth } from "../firebase";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import PricingTable from "@/components/pricingTable";
-import Header from "@/components/header";
 
 export default function Home() {
-  const path = usePathname()
-
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
-  
-  const { user } = useUser()
+  const { isLoaded, isSignedIn, user } = useUser()
   const { getToken, userId } = useAuth()
   const router = useRouter();
 
@@ -25,14 +18,16 @@ export default function Home() {
     const userCredentials = await signInWithCustomToken(auth, token || '')
     // The userCredentials.user object can call the methods of
     // the Firebase platform as an authenticated user.
-    console.log('Home page User:', userCredentials.user)
+
+    // store user object in app using context
+    console.log('Home page Firebase User:', userCredentials.user)
   }
 
   useEffect(() => {
-    if (!user) return
+    if (isLoaded && !isSignedIn) return
     console.log('signing into firebase with clerk')
     signIntoFirebaseWithClerk()
-  }, [user])
+  }, [isLoaded, isSignedIn, user])
   
   return (
     <>

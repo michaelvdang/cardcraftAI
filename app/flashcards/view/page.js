@@ -25,15 +25,11 @@ export default function Flashcard() {
   const setId = useSearchParams().get('setId');
 
   useEffect(() => {
-    if (user) {
+    if (isLoaded) {
       setIsLoading(false)
+      console.log('useEffect user: ', user)
     }
-    else {
-      setTimeout(() => {
-        setIsLoading(false)
-      }, 3000);
-    }
-  }, [user])
+  }, [isLoaded, user])
 
   useEffect(() => {
     async function getFlashcard() {

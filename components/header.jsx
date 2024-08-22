@@ -83,7 +83,8 @@ const Header = () => {
           >
             <Button
               variant="contained"
-              onClick={() => router.push('/')}
+              href='/'
+              // onClick={() => router.push('/')}
               sx={{
                 ":hover": { backgroundColor: '#555555' },
                 backgroundColor: path === '/' ? '#333333' : 'black'
@@ -97,7 +98,8 @@ const Header = () => {
                 ":hover": { backgroundColor: '#555555' },
                 backgroundColor: path === '/generate' ? '#333333' : 'black'
               }}
-              onClick={() => router.push('/generate')}
+              href='/generate'
+              // onClick={() => router.push('/generate')}
             >
               Create
             </Button>
@@ -107,7 +109,8 @@ const Header = () => {
                 ":hover": { backgroundColor: '#555555' },
                 backgroundColor: path === '/flashcards' ? '#333333' : 'black'
               }}
-              onClick={() => router.push('/flashcards')}
+              href='/flashcards'
+              // onClick={() => router.push('/flashcards')}
             >
               Flashcards
             </Button>

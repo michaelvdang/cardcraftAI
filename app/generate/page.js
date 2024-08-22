@@ -1,21 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import {
-  Container,
-  TextField,
-  Button,
-  Typography,
-  Box,
-  Grid,
-  Card,
-  CardContent,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-} from '@mui/material'
+import { Container, TextField, Button, Typography, Box, Grid, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
 import {db} from '../../firebase'
 import { doc, getDoc, collection, writeBatch, deleteDoc, getDocs } from 'firebase/firestore'
 import { useUser } from '@clerk/nextjs'
@@ -29,7 +15,7 @@ import Footer from '@/components/footer'
 import AppendOverwriteDialog from '@/components/appendOverwriteDialog'
 
 export default function Generate() {
-  const { user } = useUser()
+  const { isLoaded, isSignedIn, user } = useUser()
   const [text, setText] = useState('')
   const [flashcards, setFlashcards] = useState([])
   const [isSaved, setIsSaved] = useState(false)
@@ -46,15 +32,11 @@ export default function Generate() {
   const handleCloseAppendDialog = () => setAppendDialogOpen(false)
   
   useEffect(() => {
-    if (user) {
+    if (isLoaded) {
       setIsLoading(false)
+      console.log('useEffect user: ', user)
     }
-    else {
-      setTimeout(() => {
-        setIsLoading(false)
-      }, 3000);
-    }
-  }, [user])
+  }, [isLoaded, user])
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -239,35 +221,6 @@ export default function Generate() {
                 placeholder="Enter text here"
                 helperText={`${text.length}/500`} // Display character count
                 inputProps={{ maxLength: 500 }} // Limit to 500 characters
-                // sx={{
-                //   mb: 2,
-                //   backgroundColor: '#c5c5c5',
-                //   '& .MuiOutlinedInput-root': {
-                //     backgroundColor: 'white', // Set background color for the input,
-                //     '& fieldset': {
-                //       borderColor: 'gray', // Default border color
-                //     },
-                //     '&:hover fieldset': {
-                //       borderColor: 'black', // Border color on hover
-                //     },
-                //     '&.Mui-focused fieldset': {
-                //       borderColor: 'black', // Border color when focused
-                //     },
-                //   },
-                //   '& .MuiOutlinedInput-input': {
-                //     resize: 'vertical', // Allow resizing in both directions
-                //     overflow: 'auto', // To manage overflow when resizing
-                //   },
-                //   '& .MuiInputBase-input::placeholder': {
-                //     color: 'gray', // Default placeholder color
-                //   },
-                //   '& .MuiInputBase-input:focus::placeholder': {
-                //     color: 'black', // Placeholder color when focused
-                //   },
-                //   '& .MuiInputLabel-root.Mui-focused': {
-                //     color: 'black', // Label color when focused
-                //   },
-                // }}
               />
             </Box>
             <Box
@@ -336,7 +289,6 @@ export default function Generate() {
           </Box>
         )
       )}
-
       
       {/* Save flashcards dialog  */}
       <Dialog open={saveDialogOpen} onClose={handleCloseSaveDialog}>
@@ -370,26 +322,7 @@ export default function Generate() {
         onClickAppend={handleAppend}
         onClickOverwrite={handleOverwrite}
       />
-        
-      {/* <Dialog open={appendDialogOpen} onClose={handleCloseAppendDialog}>
-        <DialogTitle>Flashcard Set Exists</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            A flashcard set with this name already exists. Do you want to append to the existing set?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseAppendDialog} color="primary">
-            No
-          </Button>
-          <Button onClick={handleAppend} color="primary">
-            Append
-          </Button>
-          <Button onClick={handleOverwrite} color="primary">
-            Overwrite
-          </Button>
-        </DialogActions>
-      </Dialog> */}
+
     </Container>
     </>
   )
