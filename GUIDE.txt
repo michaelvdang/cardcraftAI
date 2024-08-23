@@ -1,8 +1,7 @@
 
 
 TODOs:
-- Finish adding the listener to app to update subscription tier, find out where to put the listern useUserSubscription
-- Add Publish button to page for Pro users
+- finish testing public and public/view pages 
 - Add animation or hover effect to drawer menu 
 - Review code for appbar, burger menu, drawer
 
@@ -12,6 +11,8 @@ DONE:
 - Fix webhook1234 to update database with user subscription tier
 - add stripe customerId to firestore 
 - use webhook to update user subscription type in firestore
+- Finish adding the listener to app to update subscription tier, find out where to put the listener useUserSubscription
+- Add Publish button to page for Pro users, added publish function for pro users 
 
 
 

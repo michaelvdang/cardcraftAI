@@ -48,7 +48,7 @@ export default function Flashcard() {
       const data = docSnap.data()
       setFlashcards(data.flashcards)
 
-    }
+    } 
     getFlashcards()
   }, [setId, user])
 
