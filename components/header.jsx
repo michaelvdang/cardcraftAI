@@ -110,9 +110,18 @@ const Header = () => {
                 backgroundColor: path === '/flashcards' ? '#333333' : 'black'
               }}
               href='/flashcards'
-              // onClick={() => router.push('/flashcards')}
             >
               Flashcards
+            </Button>
+            <Button
+              variant="contained"
+              sx={{
+                ":hover": { backgroundColor: '#555555' },
+                backgroundColor: path === '/flashcards' ? '#333333' : 'black'
+              }}
+              href='/public'
+            >
+              Public
             </Button>
             <Box sx={{ flexGrow: 1 }} />
             {/* </Box> */}
@@ -185,6 +194,9 @@ const Header = () => {
           </ListItem>
           <ListItem sx={{":hover": {backgroundColor: '#555555'}}} onClick={handleDrawerClose} component="a" href="/flashcards">
             <ListItemText primary="Flashcards" />
+          </ListItem>
+          <ListItem sx={{":hover": {backgroundColor: '#555555'}}} onClick={handleDrawerClose} component="a" href="/public">
+            <ListItemText primary="Public" />
           </ListItem>
           <SignedOut>
             <ListItem sx={{":hover": {backgroundColor: '#555555'}}} onClick={handleDrawerClose} component="a" href="/sign-in">

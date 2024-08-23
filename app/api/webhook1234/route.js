@@ -37,11 +37,38 @@ export async function POST(request) {
       const customerSubscriptionCreated = event.data.object;
       // Then define and call a function to handle the event customer.subscription.created
       break;
+    // case 'checkout.session.completed':
+      const checkoutSessionCompleted = event.data.object;
+      console.log('checkout session completed', checkoutSessionCompleted)
+
+      // get session id
+      const { id: sessionId } = checkoutSessionCompleted
+
+      // get session object to get the purchased products
+      const checkoutSession = await stripe.checkout.sessions.retrieve(sessionId, {expand: ['line_items']})
+      // get purchased products
+      console.log('checkoutSession.line_items.data: ', checkoutSession.line_items.data)
+      
+      break;
+
     case 'customer.subscription.updated':
       const customerSubscriptionUpdated = event.data.object;
       // Then define and call a function to handle the event customer.subscription.updated
 
       // console.log('customer subscription updated', customerSubscriptionUpdated)
+
+      // retrieve product to get its name
+      const product = await stripe.products.retrieve(customerSubscriptionUpdated.items.data[0].price.product)
+
+      console.log('product: ', product)
+
+      const availableSubscriptionTiers = {
+        'myproduct': 'myproduct',
+        'Starter': 'starter',
+        'Pro (but Free)': 'pro',
+        'Ultimate': 'ultimate',
+      }
+      const subscriptionTier = availableSubscriptionTiers[product.name]
 
       // console.log('customerSubscriptionUpdated.items.data', customerSubscriptionUpdated.items.data)
 
@@ -97,7 +124,7 @@ export async function POST(request) {
             customerId,
             productId: customerSubscriptionUpdated.items.data[0].price.product,
             subscriptionId,
-            subscriptionTier: 'pro',
+            subscriptionTier,
             current_period_start,
             current_period_end,
             cancel_at_period_end

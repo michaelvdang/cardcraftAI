@@ -2,18 +2,23 @@
 
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Container, Typography, CircularProgress, Box, Button } from '@mui/material'
+import { Container, Typography, CircularProgress, Box, Button, capitalize } from '@mui/material'
 import { useUser } from '@clerk/nextjs'
 import Header from '@/components/header'
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { useUserSubscription } from '@/utils/useUserSubscription'
 
 export default function ResultPage() {
-  const { user } = useUser()
+  const { isLoaded, isSignedIn, user } = useUser()
   const router = useRouter()
   const searchParams = useSearchParams()
   const session_id = searchParams.get('session_id')
   const [loading, setLoading] = useState(false)
   const [session, setSession] = useState(null)
   const [error, setError] = useState(null)
+
+  const subscriptionTier = useUserSubscription(user?.id);
 
   useEffect(() => {
     const fetchCheckoutSession = async () => {
@@ -39,7 +44,7 @@ export default function ResultPage() {
   
   if (loading) {
     return (
-      <Container maxWidth="sm" sx={{textAlign: 'center', mt: 4}}>
+      <Container maxWidth="sm" sx={{textAlign: 'center', mt: 10}}>
         <CircularProgress />
         <Typography variant="h6" sx={{mt: 2}}>
           Loading...
@@ -50,9 +55,12 @@ export default function ResultPage() {
 
   if (error) {
     return (
-      <Container maxWidth="sm" sx={{textAlign: 'center', mt: 4}}>
+      <Container maxWidth="sm" sx={{textAlign: 'center', pt: 10, height: '75vh'}}>
         <Typography variant="h6" color="error">
-          {error}
+          Oops! Something went wrong while processing your payment.
+        </Typography>
+        <Typography variant="h6" sx={{mt: 2}}>
+          Error message: {error?.message}
         </Typography>
       </Container>
     )
@@ -75,19 +83,28 @@ export default function ResultPage() {
       {/* Wait for maximum 10 seconds while firestore gets updated with new subscription, don't show result until then  */}
 
       {/* Session Result */}
-      {session.payment_status === 'paid' ? (
+      {!error && session?.payment_status === 'paid' ? (
         <>
           <Box
+
+          >
+            <CheckCircleOutlineIcon sx={{ fontSize: 100, color: 'green', m: { xs: 2, sm: 4, md: 6, lg: 8} }} />
+            {/* <DoneAllIcon sx={{ fontSize: 100, color: 'green' }} /> */}
+          </Box>
+
+          {/* Thank you message */}
+          <Box
             sx={{ 
-              mt: -16,
-              height: '100vh', // Make the Box take up the full viewport height
+              // mt: -16,
+              // height: '100vh', // Make the Box take up the full viewport height
               display: 'flex', // Use flexbox for centering
               flexDirection: 'column', // Stack the children vertically
               justifyContent: 'center', // Center vertically
               alignItems: 'center', // Center horizontally
             }}
           >
-            <Typography variant="h4">Thank you for your purchase{user && (', ' + user?.firstName)}!</Typography>
+            <Typography mb={2} variant="h4">Thank you for your purchase{user && (', ' + user?.firstName)}!</Typography>
+            <Typography mb={2} variant="h5">You are now a {capitalize(subscriptionTier)} member!</Typography>
             <Box sx={{mt: 2}}>
               {/* <Typography variant="h6">Session ID: {session_id}</Typography> */}
               <Typography variant="body1">

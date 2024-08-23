@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Container, TextField, Button, Typography, Box, Grid, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
 import {db} from '../../firebase'
-import { doc, getDoc, collection, writeBatch, deleteDoc, getDocs } from 'firebase/firestore'
+import { doc, getDoc, collection, writeBatch, deleteDoc, getDocs, serverTimestamp } from 'firebase/firestore'
 import { useUser } from '@clerk/nextjs'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../../firebase'
@@ -88,7 +88,7 @@ export default function Generate() {
         // flashcards collection does not exists with this setId, create a new flashcards collection
         console.log('Set does not exist')
         batch.set(setDocRef, {})
-        batch.set(setDocRef, { isPublic: false, createdAt: Date.now() })
+        batch.set(setDocRef, { isPublic: false, createdAt: serverTimestamp() })
         console.log('created new empty set')
 
         addCardsToSet(batch);
@@ -121,7 +121,7 @@ export default function Generate() {
     // create a new flashcard set named setName
     // add flashcards to new flashcard set
     batch.set(setDocRef, {})
-    batch.set(setDocRef, { isPublic: false, createdAt: Date.now() })
+    batch.set(setDocRef, { isPublic: false, createdAt: serverTimestamp() })
     console.log('created new empty set')
 
     addCardsToSet(batch)
@@ -145,7 +145,7 @@ export default function Generate() {
   const addCardsToSet = async (batch) => {
     flashcards.forEach((flashcard) => {
       const flashcardRef = doc(collection(db, 'users', user.id, 'flashcardSets', setName, 'flashcards'))
-      batch.set(flashcardRef, {...flashcard, createdAt: Date.now()})
+      batch.set(flashcardRef, {...flashcard, createdAt: serverTimestamp()})
       console.log('added document to flashcards collection')
     })
 

@@ -14,6 +14,7 @@ import ConfirmDeleteModal from "@/components/confirmDeleteDialog"
 import { useUserSubscription } from "@/utils/useUserSubscription"
 
 export default function Flashcard() {
+  const requireLogin = false;
   const { isLoaded, isSignedIn, user } = useUser()
   const [flashcards, setFlashcards] = useState([])
   const [flipped, setFlipped] = useState({})
@@ -25,7 +26,7 @@ export default function Flashcard() {
   // const params = useParams(); // read path params
   // const setId = params.id
 
-  const setId = useSearchParams().get('setId');
+  const setId = useSearchParams().get('setId'); // is publicId here
 
   useEffect(() => {
     if (isLoaded) {
@@ -36,27 +37,16 @@ export default function Flashcard() {
 
   useEffect(() => {
     async function getFlashcards() {
-      if (!setId || !user) return
+      // if (!setId || !user) return
 
-      const docRef = doc(db, 'users', user.id, 'flashcardSets', setId)
+      const docRef = doc(db, 'public', setId)
       const docSnap = await getDoc(docRef)
       if (!docSnap.exists()) {
-        router.push('/flashcards')
+        router.push('/public')
         return
       }
-
-      // get flashcards set attributes
-      const setAttributes = docSnap.data()
-      setSetAttributes(setAttributes); // isPublic and publicId
-
-      // get flashcards content
-      const colRef = collection(db, 'users', user.id, 'flashcardSets', setId, 'flashcards')
-      const colSnap = await getDocs(colRef)
-      const flashcards = []
-      colSnap.forEach((doc) => {
-        flashcards.push({id: doc.id, ...doc.data()})
-      })
-      setFlashcards(flashcards)
+      const data = docSnap.data()
+      setFlashcards(data.flashcards)
 
     }
     getFlashcards()
@@ -200,7 +190,7 @@ export default function Flashcard() {
           </Box>
         </Box>
         ) : (
-          !user ? (
+          requireLogin && !user ? (
             <RequireLogin />
           ) : (
           // Display flashcards

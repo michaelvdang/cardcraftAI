@@ -12,8 +12,10 @@ export const useUserSubscription = (userId) => {
     const unsubscribe = onSnapshot(userDocRef, (doc) => {
       if (doc.exists()) {
         const data = doc.data();
-        setSubscriptionTier(data.subscriptions[-1].subscriptionTier);
-        console.log('Hook Subscription tier:', data.subscriptions[-1].subscriptionTier);
+        console.log('useUserSubscription data: ', data);
+        const lastIndex = data.subscriptions.length - 1;
+        setSubscriptionTier(data.subscriptions[lastIndex].subscriptionTier);
+        console.log('useUserSubscription Subscription tier:', data.subscriptions[lastIndex].subscriptionTier);
       }
     });
 

@@ -1,16 +1,17 @@
 
 
 TODOs:
-- Fix webhook1234 to update database with user subscription tier
+- Finish adding the listener to app to update subscription tier, find out where to put the listern useUserSubscription
 - Add Publish button to page for Pro users
-- Restyle /generate page
 - Add animation or hover effect to drawer menu 
 - Review code for appbar, burger menu, drawer
-- add stripe customerId to firestore 
-- use webhook to update user subscription type in firestore
 
 DONE:
 - Check why some styles do not work when deployed, MUI styles is rendered in footer in production while global styles are rendered in header. 
+- Restyle /generate page
+- Fix webhook1234 to update database with user subscription tier
+- add stripe customerId to firestore 
+- use webhook to update user subscription type in firestore
 
 
 
