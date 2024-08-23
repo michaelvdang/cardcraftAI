@@ -37,7 +37,8 @@ export default function Flashcard() {
         const colSnap = await getDocs(colRef)
         const sets = []
         colSnap.forEach((doc) => {
-          sets.push({name: doc.id})
+          sets.push({name: doc.data().setId, id: doc.id})
+          // sets.push({name: doc.id})
         })
         setFlashcardSets(sets)
       } catch (error) {
@@ -87,7 +88,7 @@ export default function Flashcard() {
         {flashcardSets.map((set, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
             <Card className="flashcard-set" variant="outlined">
-              <Link href={`/public/view?setId=${set.name}`}>
+              <Link href={`/public/view?setId=${set.id}`}>
                 <CardActionArea>
                   <CardContent>
                     <Typography variant="h5" component="div">

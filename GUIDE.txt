@@ -1,7 +1,9 @@
 
 
 TODOs:
+- Unpublish function not working, eg Espn, insufficient permission
 - finish testing public and public/view pages 
+- Move Public page to Home, move Pricing and Features somewhere else, change Home CTA to open flashcards?
 - Add animation or hover effect to drawer menu 
 - Review code for appbar, burger menu, drawer
 

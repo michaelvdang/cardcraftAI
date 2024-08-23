@@ -132,6 +132,7 @@ export default function Flashcard() {
   }
 
   const handleUnpublish = async () => {
+    console.log('unpublishing: ', setAttributes?.publicId)
     const batch = writeBatch(db)
     // delete the set from the public collection
     const publicDocRef = doc(db, 'public', setAttributes?.publicId)

@@ -21,6 +21,7 @@ export default function Flashcard() {
   const [isLoading, setIsLoading] = useState(true)
   const subscriptionTier = useUserSubscription(user?.id);
   const [setAttributes, setSetAttributes] = useState({})
+  const [flashcardSetName, setFlashcardSetName] = useState('')
 
   const router = useRouter()
   // const params = useParams(); // read path params
@@ -47,7 +48,7 @@ export default function Flashcard() {
       }
       const data = docSnap.data()
       setFlashcards(data.flashcards)
-
+      setFlashcardSetName(data.setId)
     } 
     getFlashcards()
   }, [setId, user])
@@ -59,83 +60,6 @@ export default function Flashcard() {
         [i]: i == index ? !prev[index] : false,
       }))
     }
-  }
-
-  const deleteItem = async (index) => {
-    const newFlashcards = [...flashcards]
-    newFlashcards.splice(index, 1)
-    setFlashcards(newFlashcards)
-    const docRef = doc(collection(doc(collection(db, 'users'), user.id), 'flashcardSets'), setId)
-    const batch = writeBatch(db)
-    batch.update(docRef, {flashcards: newFlashcards})
-    await batch.commit()
-  }
-
-  const deleteDocument = useCallback(async () => {
-    try {
-      const docRef = doc(collection(doc(collection(db, 'users'), user.id), 'flashcardSets'), setId)
-      await deleteDoc(docRef)
-    }
-    catch (error) {
-      console.error("Error deleting document: ", error)
-    }
-  }, [user, setId]);
-
-  const handleDelete = useCallback(async () => {
-    // Add your delete logic here
-    const result = await deleteDocument();
-    router.push('/flashcards')
-    console.log("Item deleted");
-    console.log("setId: ", setId);
-  }, [deleteDocument, setId]);
-
-  const handlePublish = async () => {
-    // put the set in the public collection with random id, and fields authorId, createdAt, and flashcards array
-    // cannot batch because we need the publicId
-    console.log('break1')
-    const publicDocRef = await addDoc(collection(db, 'public'), {
-      authorId: user.id,
-      createdAt: serverTimestamp(),
-      flashcards,
-      setId: setId
-    });
-    console.log('break2')
-    
-    const batch = writeBatch(db)
-    // tried to batch but we need the publicId
-    // const publicDocRef = doc(collection(db, 'public'));
-    // batch.set(publicDocRef, {
-    //   authorId: user.id,
-    //   createdAt: serverTimestamp(),
-    //   flashcards,
-    //   setId: setId
-    // });
-
-    // mark as public in user's document
-    const docRef = doc(db, 'users', user.id, 'flashcardSets', setId)
-    batch.update(docRef, {isPublic: true, publicId: publicDocRef.id})
-    await batch.commit()
-    
-    // update UI state to reflect changes
-    setSetAttributes({isPublic: true, publicId: publicDocRef.id})
-    // setIsPublic(true)
-  }
-
-  const handleUnpublish = async () => {
-    const batch = writeBatch(db)
-    // delete the set from the public collection
-    const publicDocRef = doc(db, 'public', setAttributes?.publicId)
-    batch.delete(publicDocRef)
-    
-    // unmark as public in user's document
-    const docRef = doc(db, 'users', user.id, 'flashcardSets', setId)
-    batch.update(docRef, {isPublic: false, publicId: null})
-    await batch.commit()
-
-    // update UI state to reflect changes
-    setSetAttributes({isPublic: false, publicId: null})
-    
-    // setIsPublic(false)
   }
   
   return (
@@ -149,7 +73,7 @@ export default function Flashcard() {
           {/* Page Title and Subtitle */}
           <Box sx={{textAlign: 'center', mt: 4}}>
             <Typography variant="h2" component="h1" gutterBottom>
-              {setId}
+              {flashcardSetName}
             </Typography>
           </Box>
           {setAttributes?.isPublic ? (
@@ -160,9 +84,9 @@ export default function Flashcard() {
                 variant="contained"
                 className="primary-button"
                 // color="error"
-                onClick={handleUnpublish}
+                // onClick={handleUnpublish}
               >
-                unpublish
+                unsave
               </Button>
             </Box>
           ) : (
@@ -173,9 +97,9 @@ export default function Flashcard() {
                 variant="contained"
                 className="primary-button"
                 // color="error"
-                onClick={handlePublish}
+                // onClick={handlePublish}
               >
-                publish
+                save
               </Button>
             </Box>
           )}
@@ -296,13 +220,6 @@ export default function Flashcard() {
             </Grid>
           )
         )
-        )}
-        {flashcards.length > 0 && (
-          <Box
-            sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', m: 10 }}
-          >
-            <ConfirmDeleteModal onSubmit={handleDelete} />
-          </Box>
         )}
         </>
     </Container>
