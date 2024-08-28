@@ -156,7 +156,7 @@ const Header = () => {
               color="inherit"
               onClick={handleDrawerOpen}
             >
-              <MenuIcon style={{ color: 'white' }} />
+              <MenuIcon className='menu-icon' />
             </IconButton>
           </Box>
       </Toolbar>

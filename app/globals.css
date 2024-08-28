@@ -215,7 +215,7 @@ a {
 }
 
 /* Medium and up screen size */
-@media (min-width: 960px) {
+@media (min-width: 900px) {
   .appbar-custom {
     height: 60px;
   }
@@ -229,7 +229,7 @@ a {
 }
 
 .appbar-custom .header-title {
-  color: white;
+  color: black;
   width: 150px;
   text-align: center;
   font-size: 1.2rem;
@@ -237,9 +237,24 @@ a {
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9); /* Add text shadow */
 }
 
+.menu-icon {
+  color: black;
+}
+
+@media (prefers-color-scheme: dark) {
+  .appbar-custom .header-title {
+    color: white;
+  }
+
+  .menu-icon {
+    color: white;
+  }
+}
+
 /* Medium and up screen size */
 @media (min-width: 960px) {
   .header-title {
+    color: white;
     width: 240px;
     font-size: 1.5rem;
   }

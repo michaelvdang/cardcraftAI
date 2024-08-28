@@ -1,6 +1,7 @@
 
 
 TODOs:
+- Update features to allow 1 card gens per day, Pro free to 5 with publish right, and Ultimate to use real payment without 500 char limit
 - Unpublish function not working, eg Espn, insufficient permission
 - finish testing public and public/view pages 
 - Move Public page to Home, move Pricing and Features somewhere else, change Home CTA to open flashcards?
