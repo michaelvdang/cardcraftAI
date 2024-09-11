@@ -6,29 +6,14 @@ import { signInWithCustomToken } from "firebase/auth";
 import { auth } from "../firebase";
 import { useRouter } from "next/navigation";
 import PricingTable from "@/components/pricingTable";
+import useFirebase from "@/hooks/useFirebase";
 
 export default function Home() {
   const { isLoaded, isSignedIn, user } = useUser()
   const { getToken, userId } = useAuth()
   const router = useRouter();
+  const hasFirebaseUser = useFirebase();
 
-  const signIntoFirebaseWithClerk = async () => {
-    const token = await getToken({ template: 'integration_firebase' })
-
-    const userCredentials = await signInWithCustomToken(auth, token || '')
-    // The userCredentials.user object can call the methods of
-    // the Firebase platform as an authenticated user.
-
-    // store user object in app using context
-    console.log('Home page Firebase User:', userCredentials.user)
-  }
-
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) return
-    console.log('signing into firebase with clerk')
-    signIntoFirebaseWithClerk()
-  }, [isLoaded, isSignedIn, user])
-  
   return (
     <>
       <Box sx={{

@@ -117,7 +117,7 @@ const Header = () => {
               variant="contained"
               sx={{
                 ":hover": { backgroundColor: '#555555' },
-                backgroundColor: path === '/flashcards' ? '#333333' : 'black'
+                backgroundColor: path === '/public' ? '#333333' : 'black'
               }}
               href='/public'
             >

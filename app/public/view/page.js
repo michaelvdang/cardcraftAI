@@ -61,6 +61,13 @@ export default function Flashcard() {
       }))
     }
   }
+
+  const handleSaveClick = () => {
+    // save card to user profile
+    if (!user) {
+      
+    }
+  }
   
   return (
     <>
@@ -97,7 +104,7 @@ export default function Flashcard() {
                 variant="contained"
                 className="primary-button"
                 // color="error"
-                // onClick={handlePublish}
+                onClick={handleSaveClick}
               >
                 save
               </Button>

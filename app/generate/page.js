@@ -90,6 +90,9 @@ export default function Generate() {
         batch.set(setDocRef, {})
         batch.set(setDocRef, { isPublic: false, createdAt: serverTimestamp() })
         console.log('created new empty set')
+        
+        
+        // // batch commit????
 
         addCardsToSet(batch);
       }
