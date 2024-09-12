@@ -14,7 +14,7 @@ import '../app/globals.css'
 const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   useEffect(() => {
-    const preventScroll = (e) => {
+    const preventScroll = (e: any) => {
       e.preventDefault();
     };
   

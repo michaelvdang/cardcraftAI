@@ -4,7 +4,7 @@ import { Box, Button } from "@mui/material";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { usePathname, useSearchParams } from "next/navigation";
 
-const RequireLogin = () => {
+const RequireLogin : React.FC = () => {
   const path = usePathname();
   
   return (

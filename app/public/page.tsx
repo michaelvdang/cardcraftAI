@@ -9,11 +9,12 @@ import Header from "@/components/header"
 import Link from "next/link"
 import RequireLogin from "@/components/requireLogin"
 import { useUserSubscription } from "@/utils/useUserSubscription"
+import { FlashcardSet } from "@/types"
 
 export default function Flashcard() {
   const requireLogin = false;
   const { isLoaded, isSignedIn, user } = useUser()
-  const [flashcardSets, setFlashcardSets] = useState([])
+  const [flashcardSets, setFlashcardSets] = useState<FlashcardSet[]>([])
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const subscriptionTier = useUserSubscription(user?.id);
@@ -35,7 +36,7 @@ export default function Flashcard() {
         {/* get document with user id */}
         const colRef = collection(db, 'public')
         const colSnap = await getDocs(colRef)
-        const sets = []
+        const sets : FlashcardSet[] = []
         colSnap.forEach((doc) => {
           sets.push({name: doc.data().setId, id: doc.id})
           // sets.push({name: doc.id})

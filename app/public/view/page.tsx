@@ -4,20 +4,15 @@ import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, Typogr
 import { useCallback, useEffect, useState } from "react"
 import { collection, doc, getDoc, getDocs, writeBatch, deleteDoc, serverTimestamp, addDoc } from "firebase/firestore"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
-import { usesetIdParams } from "next/navigation"
-import DeleteIcon from '@mui/icons-material/Delete';
-import Header from "@/components/header"
-import { SignedOut } from "@clerk/nextjs"
 import { db } from "../../../firebase"
 import RequireLogin from "@/components/requireLogin"
-import ConfirmDeleteModal from "@/components/confirmDeleteDialog"
 import { useUserSubscription } from "@/utils/useUserSubscription"
 
 export default function Flashcard() {
   const requireLogin = false;
   const { isLoaded, isSignedIn, user } = useUser()
   const [flashcards, setFlashcards] = useState([])
-  const [flipped, setFlipped] = useState({})
+  const [flipped, setFlipped] = useState<boolean[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const subscriptionTier = useUserSubscription(user?.id);
   const [setAttributes, setSetAttributes] = useState({})
@@ -38,8 +33,7 @@ export default function Flashcard() {
 
   useEffect(() => {
     async function getFlashcards() {
-      // if (!setId || !user) return
-
+      
       const docRef = doc(db, 'public', setId)
       const docSnap = await getDoc(docRef)
       if (!docSnap.exists()) {
@@ -53,21 +47,23 @@ export default function Flashcard() {
     getFlashcards()
   }, [setId, user])
 
-  const handleCardClick = (index) => {
-    for (let i = 0; i < flashcards.length; i++) {
-      setFlipped((prev) => ({
-        ...prev,
-        [i]: i == index ? !prev[index] : false,
-      }))
-    }
+  const handleCardClick = (index: number) => {
+    setFlipped(flipped.map((_, i) => i === index ? true : false))
+    
+    // for (let i = 0; i < flashcards.length; i++) {
+    //   setFlipped((prev) => ({
+    //     ...prev,
+    //     [i]: i == index ? !prev[index] : false,
+    //   }))
+    // }
   }
 
-  const handleSaveClick = () => {
-    // save card to user profile
-    if (!user) {
+  // const handleSaveClick = () => {
+  //   // // save card to user profile
+  //   // if (!user) {
       
-    }
-  }
+  //   // }
+  // }
   
   return (
     <>
@@ -104,7 +100,7 @@ export default function Flashcard() {
                 variant="contained"
                 className="primary-button"
                 // color="error"
-                onClick={handleSaveClick}
+                // onClick={handleSaveClick}
               >
                 save
               </Button>
