@@ -7,11 +7,12 @@ import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { db } from "../../../firebase"
 import RequireLogin from "@/components/requireLogin"
 import { useUserSubscription } from "@/utils/useUserSubscription"
+import { FlashcardType } from "@/types"
 
 export default function Flashcard() {
   const requireLogin = false;
   const { isLoaded, isSignedIn, user } = useUser()
-  const [flashcards, setFlashcards] = useState([])
+  const [flashcards, setFlashcards] = useState<FlashcardType[]>([])
   const [flipped, setFlipped] = useState<boolean[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const subscriptionTier = useUserSubscription(user?.id);
@@ -64,6 +65,14 @@ export default function Flashcard() {
       
   //   // }
   // }
+
+  {/* TODO: save card to user profile
+    save button will add the card set id to a field in the user profile
+    user flashcards page will fetch the flashcards from the field in the public collection
+    add an option to clone card set to make it private
+    
+    
+  */}
   
   return (
     <>
