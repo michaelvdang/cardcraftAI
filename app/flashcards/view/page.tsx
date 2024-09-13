@@ -1,30 +1,33 @@
 'use client'
 import { useUser } from "@clerk/nextjs"
-import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material"
+import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, Typography } from "@mui/material"
 import { useCallback, useEffect, useState } from "react"
 import { collection, doc, getDoc, getDocs, writeBatch, deleteDoc, serverTimestamp, addDoc } from "firebase/firestore"
-import { useParams, useRouter, useSearchParams } from "next/navigation"
-import { usesetIdParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import DeleteIcon from '@mui/icons-material/Delete';
-import Header from "@/components/header"
-import { SignedOut } from "@clerk/nextjs"
 import { db } from "../../../firebase"
 import RequireLogin from "@/components/requireLogin"
 import ConfirmDeleteModal from "@/components/confirmDeleteDialog"
 import { useUserSubscription } from "@/utils/useUserSubscription"
+import { FlashcardSetType, FlashcardType } from "@/types"
 
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser()
-  const [flashcards, setFlashcards] = useState([])
-  const [flipped, setFlipped] = useState({})
+  const [flashcards, setFlashcards] = useState<FlashcardType[]>([])
+  const [flashcardSet, setFlashcardSet] = useState<FlashcardSetType | null>(null)
+  const [flipped, setFlipped] = useState<boolean[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const subscriptionTier = useUserSubscription(user?.id);
   const [setAttributes, setSetAttributes] = useState({})
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  const handleDeleteModalOpen = () => {
+    setShowDeleteModal(true);
+  };
+  const handleDeleteModalClose = () => {
+    setShowDeleteModal(false);
+  }
   const router = useRouter()
-  // const params = useParams(); // read path params
-  // const setId = params.id
-
   const setId = useSearchParams().get('setId');
 
   useEffect(() => {
@@ -48,41 +51,67 @@ export default function Flashcard() {
       // get flashcards set attributes
       const setAttributes = docSnap.data()
       setSetAttributes(setAttributes); // isPublic and publicId
+      const flashcardSet: FlashcardSetType | undefined = {
+        setId: setId,
+        isPublic: setAttributes.isPublic,
+        publicId: setAttributes.publicId,
+        createdAt: setAttributes.createdAt,
+        flashcards: [],
+      }
 
       // get flashcards content
       const colRef = collection(db, 'users', user.id, 'flashcardSets', setId, 'flashcards')
       const colSnap = await getDocs(colRef)
-      const flashcards = []
+      const flashcards: FlashcardType[] = []
       colSnap.forEach((doc) => {
-        flashcards.push({id: doc.id, ...doc.data()})
+        const data = doc.data()
+        flashcards.push({
+          cardId: doc.id,
+          front: data.front,
+          back: data.back,
+          createdAt: data.createdAt,
+        })
+        flashcardSet.flashcards.push({
+          cardId: doc.id,
+          front: data.front,
+          back: data.back,
+          createdAt: data.createdAt,
+        })
       })
       setFlashcards(flashcards)
+      setFlashcardSet(flashcardSet)
 
     }
     getFlashcards()
   }, [setId, user])
 
-  const handleCardClick = (index) => {
-    for (let i = 0; i < flashcards.length; i++) {
-      setFlipped((prev) => ({
-        ...prev,
-        [i]: i == index ? !prev[index] : false,
-      }))
-    }
+  const handleCardClick = (index: number) => {
+    setFlipped(flashcards.map((_, i) => i === index ? !flipped[i] : false))
   }
 
-  const deleteItem = async (index) => {
-    const newFlashcards = [...flashcards]
-    newFlashcards.splice(index, 1)
-    setFlashcards(newFlashcards)
-    const docRef = doc(collection(doc(collection(db, 'users'), user.id), 'flashcardSets'), setId)
-    const batch = writeBatch(db)
-    batch.update(docRef, {flashcards: newFlashcards})
-    await batch.commit()
-  }
+  // const handleCardClick = (index: number) => {
+  //   for (let i = 0; i < flashcards.length; i++) {
+  //     setFlipped((prev) => ({
+  //       ...prev,
+  //       [i]: i == index ? !prev[index] : false,
+  //     }))
+  //   }
+  // }
+
+  // const deleteItem = async (index) => {
+  //   const newFlashcards = [...flashcards]
+  //   newFlashcards.splice(index, 1)
+  //   setFlashcards(newFlashcards)
+  //   const docRef = doc(collection(doc(collection(db, 'users'), user.id), 'flashcardSets'), setId)
+  //   const batch = writeBatch(db)
+  //   batch.update(docRef, {flashcards: newFlashcards})
+  //   await batch.commit()
+  // }
 
   const deleteDocument = useCallback(async () => {
     try {
+      if (!user || !setId) throw new Error('User or set ID not found')
+
       const docRef = doc(collection(doc(collection(db, 'users'), user.id), 'flashcardSets'), setId)
       await deleteDoc(docRef)
     }
@@ -100,42 +129,42 @@ export default function Flashcard() {
   }, [deleteDocument, setId]);
 
   const handlePublish = async () => {
-    // put the set in the public collection with random id, and fields authorId, createdAt, and flashcards array
-    // cannot batch because we need the publicId
-    console.log('break1')
-    const publicDocRef = await addDoc(collection(db, 'public'), {
-      authorId: user.id,
-      createdAt: serverTimestamp(),
-      flashcards,
-      setId: setId
-    });
-    console.log('break2')
-    
-    const batch = writeBatch(db)
-    // tried to batch but we need the publicId
-    // const publicDocRef = doc(collection(db, 'public'));
-    // batch.set(publicDocRef, {
-    //   authorId: user.id,
-    //   createdAt: serverTimestamp(),
-    //   flashcards,
-    //   setId: setId
-    // });
+    try {
+      if (!user || !setId) throw new Error('User or set ID not found')
+      // put the set in the public collection with random id, and fields authorId, createdAt, and flashcards array
+      // cannot batch because we need the publicId
+      console.log('break1')
+      const publicDocRef = await addDoc(collection(db, 'public'), {
+        authorId: user.id,
+        createdAt: serverTimestamp(),
+        flashcards,
+        setId: setId
+      });
+      console.log('break2')
+      
+      const batch = writeBatch(db)
 
-    // mark as public in user's document
-    const docRef = doc(db, 'users', user.id, 'flashcardSets', setId)
-    batch.update(docRef, {isPublic: true, publicId: publicDocRef.id})
-    await batch.commit()
-    
-    // update UI state to reflect changes
-    setSetAttributes({isPublic: true, publicId: publicDocRef.id})
-    // setIsPublic(true)
+      // mark as public in user's document
+      const docRef = doc(db, 'users', user.id, 'flashcardSets', setId)
+      batch.update(docRef, {isPublic: true, publicId: publicDocRef.id})
+      await batch.commit()
+      
+      // update UI state to reflect changes
+      setSetAttributes({isPublic: true, publicId: publicDocRef.id})
+      // setIsPublic(true)
+    }
+    catch (error) {
+      console.error("Error publishing document: ", error)
+    }
   }
 
   const handleUnpublish = async () => {
-    console.log('unpublishing: ', setAttributes?.publicId)
+    if (!user || !setId || !flashcardSet || !flashcardSet.publicId) throw new Error('User or set ID or public ID not found')
+    console.log('unpublishing: ', flashcardSet?.publicId)
+    // console.log('unpublishing: ', setAttributes?.publicId)
     const batch = writeBatch(db)
     // delete the set from the public collection
-    const publicDocRef = doc(db, 'public', setAttributes?.publicId)
+    const publicDocRef = doc(db, 'public', flashcardSet?.publicId)
     batch.delete(publicDocRef)
     
     // unmark as public in user's document
@@ -163,7 +192,7 @@ export default function Flashcard() {
               {setId}
             </Typography>
           </Box>
-          {setAttributes?.isPublic ? (
+          {flashcardSet?.isPublic ? (
             <Box
               sx={{ alignSelf: 'center', position: { xs: 'relative', md: 'absolute'}, right: { md: 0}, }}
             >
@@ -312,7 +341,21 @@ export default function Flashcard() {
           <Box
             sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', m: 10 }}
           >
-            <ConfirmDeleteModal onSubmit={handleDelete} />
+
+            <Button 
+              sx={{ 
+                color: 'red', 
+                borderColor: 'red', 
+                backgroundColor: 'white',
+                ":hover": {backgroundColor: '#fff3f3'}
+              }} 
+              variant="contained"
+              startIcon={<DeleteIcon />}
+              onClick={handleDeleteModalOpen}>
+              Delete
+            </Button>
+            {/* Confirm delete modal */}
+            <ConfirmDeleteModal open={showDeleteModal} onSubmit={handleDelete} onClose={handleDeleteModalClose}/>
           </Box>
         )}
         </>

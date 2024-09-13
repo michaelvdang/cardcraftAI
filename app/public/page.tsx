@@ -9,12 +9,12 @@ import Header from "@/components/header"
 import Link from "next/link"
 import RequireLogin from "@/components/requireLogin"
 import { useUserSubscription } from "@/utils/useUserSubscription"
-import { FlashcardSet } from "@/types"
+import { PublicFlashcardSetType } from "@/types"
 
 export default function Flashcard() {
   const requireLogin = false;
   const { isLoaded, isSignedIn, user } = useUser()
-  const [flashcardSets, setFlashcardSets] = useState<FlashcardSet[]>([])
+  const [flashcardSets, setFlashcardSets] = useState<PublicFlashcardSetType[]>([])
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const subscriptionTier = useUserSubscription(user?.id);
@@ -36,9 +36,15 @@ export default function Flashcard() {
         {/* get document with user id */}
         const colRef = collection(db, 'public')
         const colSnap = await getDocs(colRef)
-        const sets : FlashcardSet[] = []
+        const sets : PublicFlashcardSetType[] = []
         colSnap.forEach((doc) => {
-          sets.push({name: doc.data().setId, id: doc.id})
+          sets.push({
+            id: doc.id,
+            setId: doc.data().setId,
+            createdAt: doc.data().createdAt.toDate(),
+            authorId: doc.data().authorId,
+            flashcards: doc.data().flashcards
+          })
           // sets.push({name: doc.id})
         })
         setFlashcardSets(sets)
@@ -93,7 +99,7 @@ export default function Flashcard() {
                 <CardActionArea>
                   <CardContent>
                     <Typography variant="h5" component="div">
-                      {set.name}
+                      {set.setId}
                     </Typography>
                   </CardContent>
                 </CardActionArea>

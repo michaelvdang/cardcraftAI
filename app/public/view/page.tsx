@@ -1,24 +1,33 @@
 'use client'
 import { useUser } from "@clerk/nextjs"
-import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material"
-import { useCallback, useEffect, useState } from "react"
-import { collection, doc, getDoc, getDocs, writeBatch, deleteDoc, serverTimestamp, addDoc } from "firebase/firestore"
-import { useParams, useRouter, useSearchParams } from "next/navigation"
+import { Box, Button, Card, CardActionArea, CardContent, Container, Grid, Typography } from "@mui/material"
+import { useEffect, useState } from "react"
+import { doc, getDoc } from "firebase/firestore"
+import { useRouter, useSearchParams } from "next/navigation"
 import { db } from "../../../firebase"
 import RequireLogin from "@/components/requireLogin"
 import { useUserSubscription } from "@/utils/useUserSubscription"
-import { FlashcardType } from "@/types"
+import { PublicFlashcardType } from "@/types"
 
 export default function Flashcard() {
   const requireLogin = false;
   const { isLoaded, isSignedIn, user } = useUser()
-  const [flashcards, setFlashcards] = useState<FlashcardType[]>([])
+  const [flashcards, setFlashcards] = useState<PublicFlashcardType[]>([])
   const [flipped, setFlipped] = useState<boolean[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const subscriptionTier = useUserSubscription(user?.id);
   const [setAttributes, setSetAttributes] = useState({})
   const [flashcardSetName, setFlashcardSetName] = useState('')
+  const [showRequireLoginDialog, setShowRequireLoginDialog] = useState(true)
 
+  const handleRequireLoginDialogClose = () => {
+    setShowRequireLoginDialog(false)
+  }
+
+  const handleRequireLoginDialogOpen = () => {
+    setShowRequireLoginDialog(true)
+  }
+  
   const router = useRouter()
   // const params = useParams(); // read path params
   // const setId = params.id
@@ -32,9 +41,11 @@ export default function Flashcard() {
     }
   }, [isLoaded, user])
 
+  // get flashcards from public collection 
   useEffect(() => {
     async function getFlashcards() {
-      
+      if (!setId) throw new Error('No setId')
+
       const docRef = doc(db, 'public', setId)
       const docSnap = await getDoc(docRef)
       if (!docSnap.exists()) {
@@ -49,22 +60,15 @@ export default function Flashcard() {
   }, [setId, user])
 
   const handleCardClick = (index: number) => {
-    setFlipped(flipped.map((_, i) => i === index ? true : false))
-    
-    // for (let i = 0; i < flashcards.length; i++) {
-    //   setFlipped((prev) => ({
-    //     ...prev,
-    //     [i]: i == index ? !prev[index] : false,
-    //   }))
-    // }
+    setFlipped(flashcards.map((_, i) => i === index ? !flipped[i] : false))
   }
 
-  // const handleSaveClick = () => {
-  //   // // save card to user profile
-  //   // if (!user) {
+  const handleSaveClick = () => {
+    // // save card to user profile
+    // if (!user) {
       
-  //   // }
-  // }
+    // }
+  }
 
   {/* TODO: save card to user profile
     save button will add the card set id to a field in the user profile
@@ -73,6 +77,11 @@ export default function Flashcard() {
     
     
   */}
+
+  // if (showLoginDialog) {
+  //   return <ConfirmDeleteModal onSubmit={() => setShowLoginDialog(false)} />
+  //   // return <RequireLogin />
+  // }
   
   return (
     <>
@@ -88,7 +97,7 @@ export default function Flashcard() {
               {flashcardSetName}
             </Typography>
           </Box>
-          {setAttributes?.isPublic ? (
+          {/* {setAttributes?.isPublic ? (
             <Box
               sx={{ alignSelf: 'center', position: { xs: 'relative', md: 'absolute'}, right: { md: 0}, }}
             >
@@ -114,7 +123,7 @@ export default function Flashcard() {
                 save
               </Button>
             </Box>
-          )}
+          )} */}
         </Box>
           
         {isLoading ? (

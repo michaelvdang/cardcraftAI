@@ -15,7 +15,7 @@ You should return in the following JSON format:
 }
 `
 
-export async function POST(req) {
+export async function POST(req: Request) {
   const openai = new OpenAI(
     // process.env.OPENAI_API_KEY,
   )
@@ -32,16 +32,26 @@ export async function POST(req) {
     })
 
     // Parse the JSON response from the OpenAI API
-    const flashcards = JSON.parse(completion.choices[0].message.content)
+    const flashcards = JSON.parse(completion.choices[0].message.content || '')
 
     // Return the flashcards as a JSON response
     return NextResponse.json(flashcards.flashcards)
   }
-  catch (error) {
+  catch (error: unknown) {
     console.error('Server: Error generating flashcards:', error)
-    return new NextResponse(JSON.stringify({ error: { message: error.message } }), {
-      status: 500,
-    })
+    if (error instanceof Error) {
+      // TypeScript now knows `error` is an `Error`
+      console.error('Server: Error generating flashcards:', error.message);
+      return new NextResponse(JSON.stringify({ error: { message: error.message } }), {
+        status: 500,
+      });
+    } else {
+      // Handle cases where `error` is not an `Error`
+      console.error('Server: Unexpected error:', error);
+      return new NextResponse(JSON.stringify({ error: { message: 'An unexpected error occurred' } }), {
+        status: 500,
+      });
+    }
   }
 }
 

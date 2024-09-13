@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Container, TextField, Button, Typography, Box, Grid, Card, CardContent, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material'
 import {db} from '../../firebase'
-import { doc, getDoc, collection, writeBatch, deleteDoc, getDocs, serverTimestamp } from 'firebase/firestore'
+import { doc, getDoc, collection, writeBatch, deleteDoc, getDocs, serverTimestamp, WriteBatch } from 'firebase/firestore'
 import { useUser } from '@clerk/nextjs'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../../firebase'
@@ -13,11 +13,12 @@ import { SignedOut } from '@clerk/nextjs'
 import RequireLogin from '@/components/requireLogin'
 import Footer from '@/components/footer'
 import AppendOverwriteDialog from '@/components/appendOverwriteDialog'
+import { FlashcardType } from '@/types'
 
 export default function Generate() {
   const { isLoaded, isSignedIn, user } = useUser()
   const [text, setText] = useState('')
-  const [flashcards, setFlashcards] = useState([])
+  const [flashcards, setFlashcards] = useState<FlashcardType[]>([])
   const [isSaved, setIsSaved] = useState(false)
   const [setName, setSetName] = useState('')
   const [saveDialogOpen, setSaveDialogOpen] = useState(false)
@@ -64,6 +65,10 @@ export default function Generate() {
     }
   
     try {
+      if (!user) {
+        alert('Please sign in to save flashcards.')
+        return
+      }
       console.log("user.id: ", user.id)
       const userDocRef = doc(collection(db, 'users'), user.id)
       const userDocSnap = await getDoc(userDocRef)
@@ -81,18 +86,16 @@ export default function Generate() {
       if (setDocSnap.exists()) {
         console.log('Set already exists')
         // add logic for confirming the user wants to append to list
-        setSnap(setDocSnap)
+        // setSnap(setDocSnap)
         setAppendDialogOpen(true);
-        await batch.commit()
+        batch.commit()
       } else {
         // flashcards collection does not exists with this setId, create a new flashcards collection
         console.log('Set does not exist')
         batch.set(setDocRef, {})
         batch.set(setDocRef, { isPublic: false, createdAt: serverTimestamp() })
         console.log('created new empty set')
-        
-        
-        // // batch commit????
+        // batch.commit()
 
         addCardsToSet(batch);
       }
@@ -103,6 +106,10 @@ export default function Generate() {
   }
 
   const handleOverwrite = async () => {
+    if (!user) {
+      alert('Please sign in to overwrite flashcards.')
+      return
+    }
     // overwrite
     setSaveDialogOpen(false);
 
@@ -145,7 +152,11 @@ export default function Generate() {
     // router.push('/flashcards/view?setId=' + setName)
   }
 
-  const addCardsToSet = async (batch) => {
+  const addCardsToSet = async (batch: WriteBatch) => {
+    if (!user) {
+      alert('Please sign in to save flashcards.')
+      return
+    }
     flashcards.forEach((flashcard) => {
       const flashcardRef = doc(collection(db, 'users', user.id, 'flashcardSets', setName, 'flashcards'))
       batch.set(flashcardRef, {...flashcard, createdAt: serverTimestamp()})
@@ -179,6 +190,7 @@ export default function Generate() {
       }
   
       const data = await response.json()
+      console.log('Generated flashcards:', data)
       setFlashcards(data)
       setIsCreatingCards(false)
     } catch (error) {

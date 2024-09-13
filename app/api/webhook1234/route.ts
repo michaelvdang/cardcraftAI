@@ -4,14 +4,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 import admin from "@/firebaseAdmin";
 import { getDocs, query, where } from "firebase/firestore";
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST, {
-  apiVersion: "2022-11-15",
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_TEST || '', {
+  apiVersion: "2024-06-20",
+  // apiVersion: "2022-11-15",
 });
 
-export async function POST(request) {
+export async function POST(request: NextRequest) {
   const body = await request.text();
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET_TEST;
-  const sig = headers().get("stripe-signature");
+  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET_TEST || '';
+  const sig = headers().get("stripe-signature") as string;
   let event;
   try {
     event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
@@ -45,30 +46,43 @@ export async function POST(request) {
       const { id: sessionId } = checkoutSessionCompleted
 
       // get session object to get the purchased products
-      const checkoutSession = await stripe.checkout.sessions.retrieve(sessionId, {expand: ['line_items']})
+      const checkoutSession = await stripe.checkout.sessions.retrieve(sessionId, {expand: ['line_items']})  as Stripe.Checkout.Session & { line_items: Stripe.ApiList<Stripe.LineItem> }
+
       // get purchased products
-      console.log('checkoutSession.line_items.data: ', checkoutSession.line_items.data)
+      if (checkoutSession.line_items && checkoutSession.line_items.data) {
+        console.log('checkoutSession.line_items.data: ', checkoutSession.line_items.data);
+        // Proceed with handling `line_items.data`
+      } else {
+        console.log('No line items found in the checkout session.');
+      }
       
       break;
 
     case 'customer.subscription.updated':
-      const customerSubscriptionUpdated = event.data.object;
+      const customerSubscriptionUpdated = event.data.object as Stripe.Subscription;
       // Then define and call a function to handle the event customer.subscription.updated
 
       // console.log('customer subscription updated', customerSubscriptionUpdated)
 
+      
+      // Ensure the product is a string (ID) before passing to retrieve
+      const productId = typeof customerSubscriptionUpdated.items.data[0].price.product === 'string'
+      ? customerSubscriptionUpdated.items.data[0].price.product
+      : (customerSubscriptionUpdated.items.data[0].price.product as Stripe.Product).id;
+
       // retrieve product to get its name
-      const product = await stripe.products.retrieve(customerSubscriptionUpdated.items.data[0].price.product)
+      const product = await stripe.products.retrieve(productId)
+      // const product = await stripe.products.retrieve(customerSubscriptionUpdated.items.data[0].price.product)
 
       console.log('product: ', product)
 
-      const availableSubscriptionTiers = {
+      const availableSubscriptionTiers: { [key: string]: string } = {
         'myproduct': 'myproduct',
         'Starter': 'starter',
         'Pro (but Free)': 'pro',
         'Ultimate': 'ultimate',
       }
-      const subscriptionTier = availableSubscriptionTiers[product.name]
+      const subscriptionTier = availableSubscriptionTiers[product.name] || 'unknown'
 
       // console.log('customerSubscriptionUpdated.items.data', customerSubscriptionUpdated.items.data)
 

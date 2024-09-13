@@ -7,38 +7,27 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-export default function ConfirmDeleteModal({onSubmit}) {
-  const [open, setOpen] = React.useState(false);
+interface ConfirmDeleteModalProps {
+  open: boolean;
+  onSubmit: () => void;
+  onClose: () => void;
+}
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
+export default function ConfirmDeleteModal({open, onSubmit, onClose}: ConfirmDeleteModalProps) {
   const handleClose = () => {
-    setOpen(false);
+    onClose();
   };
 
   const handleDelete = () => {
     // Add your delete logic here
     onSubmit();
     console.log("Item deleted");
-    setOpen(false);
+    onClose();
   };
 
   return (
-    <div>
-      <Button 
-        sx={{ 
-          color: 'red', 
-          borderColor: 'red', 
-          backgroundColor: 'white',
-          ":hover": {backgroundColor: '#fff3f3'}
-        }} 
-        variant="contained"
-        startIcon={<DeleteIcon />}
-        onClick={handleClickOpen}>
-        Delete
-      </Button>
+    <div
+    >
       <Dialog
         open={open}
         onClose={handleClose}

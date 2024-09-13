@@ -12,7 +12,7 @@ import { useUserSubscription } from "@/utils/useUserSubscription"
 
 export default function Flashcard() {
   const { isLoaded, isSignedIn, user } = useUser()
-  const [flashcardSets, setFlashcardSets] = useState([])
+  const [flashcardSetNames, setFlashcardSetNames] = useState<string[]>([])
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const subscriptionTier = useUserSubscription(user?.id);
@@ -26,7 +26,7 @@ export default function Flashcard() {
   }, [isLoaded, user])
 
   useEffect(() => {
-    async function getFlashcards() {
+    async function getFlashcardSetNames() {
       if (!user) return
       setIsLoading(true)
       try {
@@ -37,11 +37,12 @@ export default function Flashcard() {
           {/* get document ids from flashcardSets collection */}
           const colRef = collection(docRef, 'flashcardSets')
           const colSnap = await getDocs(colRef)
-          const sets = []
+          const sets: string[] = []
           colSnap.forEach((doc) => {
-            sets.push({name: doc.id})
+            sets.push(doc.id)
+            // sets.push({name: doc.id})
           })
-          setFlashcardSets(sets)
+          setFlashcardSetNames(sets)
         }
       } catch (error) {
         console.log(error)
@@ -49,7 +50,7 @@ export default function Flashcard() {
       setIsLoading(false)
     }
     console.log("flashcards useeffect user: ", user)
-    getFlashcards()
+    getFlashcardSetNames()
   }, [user])
 
   return (
@@ -73,7 +74,7 @@ export default function Flashcard() {
         !user ? (
           <RequireLogin />
         ) : (
-          (flashcardSets.length === 0) && (
+          (flashcardSetNames.length === 0) && (
             isLoading ? (
                 <Box
                   sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', mt: -40 }}
@@ -87,14 +88,14 @@ export default function Flashcard() {
         )
       )}
       <Grid container spacing={3} sx={{ mt: 4 }}>
-        {flashcardSets.map((set, index) => (
+        {flashcardSetNames.map((setName, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
             <Card className="flashcard-set" variant="outlined">
-              <Link href={`/flashcards/view?setId=${set.name}`}>
+              <Link href={`/flashcards/view?setId=${setName}`}>
                 <CardActionArea>
                   <CardContent>
                     <Typography variant="h5" component="div">
-                      {set.name}
+                      {setName}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
