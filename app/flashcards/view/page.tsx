@@ -130,7 +130,7 @@ export default function Flashcard() {
 
   const handlePublish = async () => {
     try {
-      if (!user || !setId) throw new Error('User or set ID not found')
+      if (!user || !setId || !flashcardSet) throw new Error('User or set ID or flashcard set not found')
       // put the set in the public collection with random id, and fields authorId, createdAt, and flashcards array
       // cannot batch because we need the publicId
       console.log('break1')
@@ -151,6 +151,7 @@ export default function Flashcard() {
       
       // update UI state to reflect changes
       setSetAttributes({isPublic: true, publicId: publicDocRef.id})
+      setFlashcardSet({ ...flashcardSet, publicId: publicDocRef.id, isPublic: true })
       // setIsPublic(true)
     }
     catch (error) {
@@ -174,7 +175,7 @@ export default function Flashcard() {
 
     // update UI state to reflect changes
     setSetAttributes({isPublic: false, publicId: null})
-    
+    setFlashcardSet({ ...flashcardSet, publicId: publicDocRef.id, isPublic: false })
     // setIsPublic(false)
   }
   

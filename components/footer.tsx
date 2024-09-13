@@ -36,16 +36,16 @@ const Footer = () => {
               Quick Links
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <Link href="/#features" color="inherit" underline="hover">
+              <Link href="/#features" color="inherit">
                 Features
               </Link>
-              <Link href="/#pricing" color="inherit" underline="hover">
+              <Link href="/#pricing" color="inherit">
                 Pricing
               </Link>
-              {/* <Link href="#" color="inherit" underline="hover">
+              {/* <Link href="#" color="inherit">
                 FAQ
               </Link>
-              <Link href="#" color="inherit" underline="hover">
+              <Link href="#" color="inherit">
                 Blog
               </Link> */}
             </Box>
@@ -57,9 +57,9 @@ const Footer = () => {
               Contact Us
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <Link href="https://linkedin.com/in/michael-v-dang" color="inherit" underline="hover">LinkedIn</Link>
-              <Link href="mailto:michaeldangv@gmail.com" color="inherit" underline="hover">Email</Link>
-              <Link href="https://github.com/michaelvdang/" color="inherit" underline="hover">Github</Link>
+              <Link href="https://linkedin.com/in/michael-v-dang" color="inherit">LinkedIn</Link>
+              <Link href="mailto:michaeldangv@gmail.com" color="inherit">Email</Link>
+              <Link href="https://github.com/michaelvdang/" color="inherit">Github</Link>
             </Box>
           </Grid>
 

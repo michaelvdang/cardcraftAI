@@ -8,6 +8,7 @@ import Header from '@/components/header'
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useUserSubscription } from '@/utils/useUserSubscription'
+import Stripe from 'stripe'
 
 export default function ResultPage() {
   const { isLoaded, isSignedIn, user } = useUser()
@@ -15,10 +16,10 @@ export default function ResultPage() {
   const searchParams = useSearchParams()
   const session_id = searchParams.get('session_id')
   const [loading, setLoading] = useState(false)
-  const [session, setSession] = useState(null)
-  const [error, setError] = useState(null)
+  const [session, setSession] = useState<Stripe.Checkout.Session | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
-  const subscriptionTier = useUserSubscription(user?.id);
+  const subscriptionTier = useUserSubscription(user?.id) || '';
 
   useEffect(() => {
     const fetchCheckoutSession = async () => {
@@ -60,7 +61,7 @@ export default function ResultPage() {
           Oops! Something went wrong while processing your payment.
         </Typography>
         <Typography variant="h6" sx={{mt: 2}}>
-          Error message: {error?.message}
+          Error message: {error}
         </Typography>
       </Container>
     )

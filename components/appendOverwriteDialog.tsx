@@ -1,7 +1,14 @@
 import React from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 
-const AppendOverwriteDialog = ({onClickAppend, onClickOverwrite, open, onClose}) => {
+interface AppendOverwriteDialogProps {
+  open: boolean;
+  onClickAppend: () => void;
+  onClickOverwrite: () => void;
+  onClose: () => void;
+}
+
+const AppendOverwriteDialog = ({onClickAppend, onClickOverwrite, open, onClose}: AppendOverwriteDialogProps) => {
   return (
     <Dialog
       open={open}

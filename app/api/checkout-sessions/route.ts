@@ -102,7 +102,7 @@ export async function GET(req: NextRequest) {
       throw new Error('Session ID is required')
     }
 
-    const checkoutSession = await stripe.checkout.sessions.retrieve(session_id)
+    const checkoutSession: Stripe.Checkout.Session = await stripe.checkout.sessions.retrieve(session_id)
 
     return NextResponse.json(checkoutSession)
   } catch (error: any) {
